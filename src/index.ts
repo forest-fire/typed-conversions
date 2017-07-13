@@ -1,4 +1,4 @@
-import './globals';
+import { IDictionary } from 'common-types';
 import * as Firebase from 'firebase-admin';
 
 export function hashToArray<T = IDictionary>(hashObj: IDictionary<any>, __key__: string = 'id') {
@@ -44,21 +44,4 @@ export function snapshotToHashList<T = IDictionary>(snap: Firebase.database.Data
   });
 
   return hashList as T[];
-}
-
-/**
- * Takes a structured hash of similarly typed promises and returns the results   
- * when all promises resolve in the same key structure as it was passed in.
- * 
- * @param promiseHash a hash of promises
- */
-export function settleProps<T>(promiseHash: IDictionary<Promise<T>>) {
-
-  const reflections: IDictionary<Promise<Promise.Inspection<T>>> = Object.keys(promiseHash)
-    .reduce((newObject: IDictionary<any>, key: string) => {
-      newObject[key] = promiseHash[key].reflect();
-      return newObject;
-    }, {});
-
-  return Promise.props(reflections);
 }

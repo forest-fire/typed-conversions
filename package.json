@@ -1,12 +1,14 @@
 {
-  "name": "typed-data-conversions",
-  "version": "0.0.0",
-  "description": "typed-data-conversions",
+  "name": "typed-conversions",
+  "version": "0.5.1",
+  "description": "typed-conversions",
   "license": "MIT",
-  "repository": "",
-  "author": "",
+  "repository": "https://github.com/forest-fire/typed-conversions",
+  "author": "Ken Snyder <ken@ken.net>",
   "keywords": [
-    ""
+    "firebase",
+    "utility",
+    "typescript"
   ],
   "files": [
     "lib"
@@ -22,18 +24,21 @@
     "watch": "npm run build -- --watch",
     "watch:test": "npm run test -- --watch"
   },
-  "dependencies": {},
+  "dependencies": {
+    "common-types": "^1.1.0"
+  },
   "devDependencies": {
     "@types/chai": "^3.0.0",
     "@types/mocha": "^2.0.0",
     "@types/node": "^7.0.0",
     "chai": "^3.0.0",
     "coveralls": "^2.0.0",
+    "firebase-admin": "^5.0.1",
     "mocha": "^3.0.0",
     "nyc": "^10.0.0",
     "rimraf": "^2.0.0",
     "ts-node": "^3.0.0",
-    "tslint": "^5.0.0",
+    "tslint": "^5.5.0",
     "typescript": "^2.0.0"
   },
   "engines": {
