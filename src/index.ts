@@ -1,7 +1,10 @@
 import { IDictionary } from 'common-types';
 import * as Firebase from 'firebase-admin';
 
-export function hashToArray<T = IDictionary>(hashObj: IDictionary<any>, __key__: string = 'id') {
+export function hashToArray<T = IDictionary>(
+  hashObj: IDictionary<any>,
+  __key__: string = 'id'
+) {
   const hash: IDictionary = { ...{}, ...hashObj };
   if (!hash) {
     return [];
@@ -16,32 +19,60 @@ export function hashToArray<T = IDictionary>(hashObj: IDictionary<any>, __key__:
 }
 
 export function flatten(list: any[]): any[] {
-  return list.reduce(
-    (a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []
-  );
+  return list.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
 }
 
-export function snapshotToHash<T = IDictionary>(snap: Firebase.database.DataSnapshot, idProp: string = 'id') {
-  const hash = snap.val();
-  
-  if (!hash) {
-    return new Object() as T;
+/**
+ * Snapshot to Array (unordered)
+ *
+ * converts snapshot directly to JS and then converts hash to an
+ * array structure but any sorting that came from the server query
+ * will be ignored.
+ */
+export function snapshotToArray<T = IDictionary>(
+  snap: Firebase.database.DataSnapshot,
+  idProp: string = 'id'
+): T[] {
+  const hash: IDictionary = snap.val() || {};
+  const output: T[] = [];
+  if (typeof hash !== 'object') {
+    return [ hash ];
   }
-  const idValue = typeof snap === 'object' && snap.key 
-    ? snap.key 
-    : null;
-    
-  return idValue && typeof hash === 'object'
-    ? { ...hash, ...{[idProp]: idValue} }
-    : hash;
+  Object.keys(hash).forEach(key => {
+    const newProps = typeof hash[key] === 'object'
+      ? hash[key]
+      : { value: hash[key] };
+
+    output.push({
+      ...{ [idProp]: key },
+      ...newProps as any
+    });
+  });
+
+  return output;
 }
 
-export function snapshotToHashList<T = IDictionary>(snap: Firebase.database.DataSnapshot, idProp = 'id') {
-  const hashList: T[] = [];
-  snap.forEach((child: any) => {
-    hashList.push( snapshotToHash<T>(child, idProp) );
+/**
+ * Snapshot to Array (ordered)
+ *
+ * uses Firebase forEach() iterator to gain the appropriate sorting from the query.
+ */
+export function snapshotToOrderedArray<T = IDictionary>(
+  snap: Firebase.database.DataSnapshot,
+  idProp = 'id'
+): T[] {
+  const output: T[] = [];
+  snap.forEach((record: Firebase.database.DataSnapshot) => {
+    const obj: Partial<T> = record.val();
+    const key: string = record.key;
+    if (typeof obj !== 'object' ) {
+      throw new Error(`Can't create a list from scalar values: "${obj}" | "${key}"`);
+    }
+
+    output.push( { ...{[idProp]: key }, ...obj as any } );
+
     return true;
   });
 
-  return hashList as T[];
+  return output as T[];
 }
