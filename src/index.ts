@@ -5,13 +5,16 @@ export function hashToArray<T = IDictionary>(
   hashObj: IDictionary<any>,
   __key__: string = 'id'
 ) {
-  const hash: IDictionary = { ...{}, ...hashObj };
-  if (!hash) {
-    return [];
+  if (hashObj && typeof hashObj !== 'object') {
+    throw new Error('Cant convert hash-to-array because hash was not passed in: ' + hashObj);
   }
+  const hash: IDictionary = { ...{}, ...hashObj };
   const results: T[] = [];
   Object.keys(hash).forEach(key => {
-    const obj: IDictionary = hash[key];
+    const newProps = typeof hash[key] === 'object'
+      ? hash[key]
+      : { value: hash[key] };
+    const obj: IDictionary = { ...{}, ...newProps };
     obj[__key__] = key;
     results.push(obj as T);
   });
@@ -20,6 +23,23 @@ export function hashToArray<T = IDictionary>(
 
 export function flatten(list: any[]): any[] {
   return list.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
+}
+
+export function arrayToHash<T = IDictionary>(
+  list: any[],
+  __key__: string = 'id'
+) {
+  if (!Array.isArray(list)) {
+    throw new Error(`arrayToHash: input was not an array!`);
+  }
+
+  return list.reduce((acc, record) => {
+    const recordNoId = { ...{}, ...record};
+    delete recordNoId[__key__];
+    return Object.keys(recordNoId).length === 1 && recordNoId.value
+      ? { ...acc, ...{[record[__key__]]: recordNoId.value} }
+      : { ...acc, ...{[record[__key__]]: recordNoId} };
+  }, new Object());
 }
 
 /**
@@ -34,22 +54,8 @@ export function snapshotToArray<T = IDictionary>(
   idProp: string = 'id'
 ): T[] {
   const hash: IDictionary = snap.val() || {};
-  const output: T[] = [];
-  if (typeof hash !== 'object') {
-    return [ hash ];
-  }
-  Object.keys(hash).forEach(key => {
-    const newProps = typeof hash[key] === 'object'
-      ? hash[key]
-      : { value: hash[key] };
 
-    output.push({
-      ...{ [idProp]: key },
-      ...newProps as any
-    });
-  });
-
-  return output;
+  return this.hashToArray(hash, idProp);
 }
 
 /**
@@ -75,4 +81,11 @@ export function snapshotToOrderedArray<T = IDictionary>(
   });
 
   return output as T[];
+}
+
+export function snapshotToOrderedHash<T = IDictionary>(
+  snap: Firebase.database.DataSnapshot,
+  idProp = 'id'): IDictionary<T> {
+  const orderedArray = this.snapshotToOrderedArray(snap, idProp);
+  return this.arrayToHash(orderedArray);
 }

@@ -22,12 +22,23 @@ export function setupEnv() {
   return combined;
 }
 
-export function firstKey<T = any>(listOf: IDictionary<T>) {
-  return first(Object.keys(listOf));
+/**
+ * The first key in a Hash/Dictionary
+ */
+export function firstKey<T = any>(dictionary: IDictionary<T>) {
+  return first(Object.keys(dictionary));
+}
+
+export function firstRecord<T = any>(dictionary: IDictionary<T>) {
+  return dictionary[this.firstKey(dictionary)];
 }
 
 export function lastKey<T = any>(listOf: IDictionary<T>) {
   return last(Object.keys(listOf));
+}
+
+export function lastRecord<T = any>(dictionary: IDictionary<T>) {
+  return dictionary[this.lastKey(dictionary)];
 }
 
 export function valuesOf<T = any>(listOf: IDictionary<T>, property: string) {
