@@ -59,6 +59,23 @@ export function snapshotToArray<T = IDictionary>(
 }
 
 /**
+ * Converts a Firebase snapshot to JS object with both val() and key
+ * represented in the JS object
+ *
+ * @param snap the Firebase Snapshot
+ * @param idProp the property used to store the "id/key" of the record
+ */
+export function snapshotToHash<T = IDictionary>(
+  snap: Firebase.database.DataSnapshot,
+  idProp: string = 'id'
+): IDictionary<T> {
+  const hash: IDictionary = snap.val() || {};
+  hash[idProp] = snap.key;
+
+  return hash as IDictionary<T>;
+}
+
+/**
  * Snapshot to Array (ordered)
  *
  * uses Firebase forEach() iterator to gain the appropriate sorting from the query.
