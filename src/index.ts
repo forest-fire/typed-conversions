@@ -68,11 +68,11 @@ export function snapshotToArray<T = IDictionary>(
 export function snapshotToHash<T = IDictionary>(
   snap: Firebase.database.DataSnapshot,
   idProp: string = 'id'
-): IDictionary<T> {
+): T {
   const hash: IDictionary = snap.val() || {};
   hash[idProp] = snap.key;
 
-  return hash as IDictionary<T>;
+  return hash as T;
 }
 
 /**

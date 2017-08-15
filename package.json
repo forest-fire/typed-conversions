@@ -1,6 +1,6 @@
 {
   "name": "typed-conversions",
-  "version": "0.6.5",
+  "version": "0.6.6",
   "description": "typed-conversions",
   "license": "MIT",
   "repository": "https://github.com/forest-fire/typed-conversions",
@@ -37,7 +37,7 @@
     "@types/stack-trace": "^0.0.28",
     "chai": "^3.0.0",
     "coveralls": "^2.0.0",
-    "firebase-admin": "^5.0.1",
+    "firebase-admin": "5.1.0",
     "lodash": "^4.17.4",
     "mocha": "^3.0.0",
     "nyc": "^10.0.0",
