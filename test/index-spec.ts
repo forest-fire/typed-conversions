@@ -60,6 +60,22 @@ const listOfScalar = {
   })
 };
 
+describe('snapshotToHash', () => {
+  it('works with default idProp', () => {
+    const converted = convert.snapshotToHash(listSnapshot as any);
+    expect(converted).to.be.an('object');
+    expect(helpers.length(converted)).to.equal(8);
+    expect(helpers.firstRecord(converted)).has.property('id');
+  });
+
+  it('works with bespoke idProp', () => {
+    const converted = convert.snapshotToHash(listSnapshot as any, 'key');
+    expect(converted).to.be.an('object');
+    expect(helpers.length(converted)).to.equal(8);
+    expect(helpers.firstRecord(converted)).has.property('key');
+  });
+});
+
 describe("hashToArray()", () => {
   it("works with no 'id' conflicts", () => {
     const converted = convert.hashToArray({...{}, ...basicHash });

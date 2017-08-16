@@ -70,7 +70,7 @@ export function snapshotToHash<T = IDictionary>(
   idProp: string = 'id'
 ): T {
   const hash: IDictionary = snap.val() || {};
-  hash[idProp] = snap.key;
+  Object.keys(hash).forEach(key => hash[key][idProp] = key);
 
   return hash as T;
 }
