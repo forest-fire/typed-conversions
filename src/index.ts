@@ -55,7 +55,7 @@ export function snapshotToArray<T = IDictionary>(
 ): T[] {
   const hash: IDictionary = snap.val() || {};
 
-  return this.hashToArray(hash, idProp);
+  return hashToArray(hash, idProp);
 }
 
 /**
@@ -70,8 +70,10 @@ export function snapshotToHash<T = IDictionary>(
   idProp: string = 'id'
 ): T {
   const hash: IDictionary = snap.val() || {};
-  Object.keys(hash).forEach(key => hash[key][idProp] = key);
-
+  Object.keys(hash).forEach(key => typeof hash[key] === 'object'
+   ? hash[key][idProp] = key
+   : hash[key] = { [idProp]: key, value: hash[key] }
+  );
   return hash as T;
 }
 

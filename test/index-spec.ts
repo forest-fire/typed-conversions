@@ -51,6 +51,11 @@ const valueSnapshot = {
   val: () => 'hello world'
 };
 
+const scalarSnapshot = {
+  key: 'foobar',
+  val: () => scalarHash
+};
+
 const listOfScalar = {
   key: 'foobar',
   val: () => ({
@@ -63,6 +68,8 @@ const listOfScalar = {
 describe('snapshotToHash', () => {
   it('works with default idProp', () => {
     const converted = convert.snapshotToHash(listSnapshot as any);
+    console.log(converted);
+
     expect(converted).to.be.an('object');
     expect(helpers.length(converted)).to.equal(8);
     expect(helpers.firstRecord(converted)).has.property('id');
@@ -70,6 +77,16 @@ describe('snapshotToHash', () => {
 
   it('works with bespoke idProp', () => {
     const converted = convert.snapshotToHash(listSnapshot as any, 'key');
+    console.log(converted);
+
+    expect(converted).to.be.an('object');
+    expect(helpers.length(converted)).to.equal(8);
+    expect(helpers.firstRecord(converted)).has.property('key');
+  });
+
+  it('works with a scalar snapshot', () => {
+    const converted = convert.snapshotToHash(scalarSnapshot as any, 'key');
+
     expect(converted).to.be.an('object');
     expect(helpers.length(converted)).to.equal(8);
     expect(helpers.firstRecord(converted)).has.property('key');
