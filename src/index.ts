@@ -1,5 +1,10 @@
 import { IDictionary } from 'common-types';
-import * as Firebase from 'firebase-admin';
+
+export interface ISnapShot {
+  val: () => any;
+  key: string;
+  forEach( mapper: (child: ISnapShot) => boolean): void;
+}
 
 export function hashToArray<T = IDictionary>(
   hashObj: IDictionary<any>,
@@ -50,7 +55,7 @@ export function arrayToHash<T = IDictionary>(
  * will be ignored.
  */
 export function snapshotToArray<T = IDictionary>(
-  snap: Firebase.database.DataSnapshot,
+  snap: ISnapShot,
   idProp: string = 'id'
 ): T[] {
   const hash: IDictionary = snap.val() || {};
@@ -66,7 +71,7 @@ export function snapshotToArray<T = IDictionary>(
  * @param idProp the property used to store the "id/key" of the record
  */
 export function snapshotToHash<T = IDictionary>(
-  snap: Firebase.database.DataSnapshot,
+  snap: ISnapShot,
   idProp: string = 'id'
 ): T {
   const hash: IDictionary = snap.val() || {};
@@ -83,18 +88,17 @@ export function snapshotToHash<T = IDictionary>(
  * uses Firebase forEach() iterator to gain the appropriate sorting from the query.
  */
 export function snapshotToOrderedArray<T = IDictionary>(
-  snap: Firebase.database.DataSnapshot,
+  snap: ISnapShot,
   idProp = 'id'
 ): T[] {
   const output: T[] = [];
-  snap.forEach((record: Firebase.database.DataSnapshot) => {
-    const obj: Partial<T> = record.val();
-    const key: string = record.key;
+  snap.forEach((child: ISnapShot) => {
+    const obj: any = child.val();
+    const key: string = child.key;
     if (typeof obj !== 'object' ) {
       throw new Error(`Can't create a list from scalar values: "${obj}" | "${key}"`);
     }
-
-    output.push( { ...{[idProp]: key }, ...obj as any } );
+    output.push( { ...{[idProp]: key }, ...obj } );
 
     return true;
   });
@@ -103,7 +107,7 @@ export function snapshotToOrderedArray<T = IDictionary>(
 }
 
 export function snapshotToOrderedHash<T = IDictionary>(
-  snap: Firebase.database.DataSnapshot,
+  snap: ISnapShot,
   idProp = 'id'): IDictionary<T> {
   const orderedArray = this.snapshotToOrderedArray(snap, idProp);
   return this.arrayToHash(orderedArray);
