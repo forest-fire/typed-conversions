@@ -1,4 +1,5 @@
-import { IDictionary } from 'common-types';
+import { IDictionary } from "common-types";
+export { IDictionary } from "common-types";
 export interface ISnapShot {
     val: () => any;
     key: string;

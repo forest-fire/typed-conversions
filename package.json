@@ -1,26 +1,25 @@
 {
   "name": "typed-conversions",
-  "version": "0.7.3",
+  "version": "0.7.4",
   "description": "typed-conversions",
   "license": "MIT",
   "repository": "https://github.com/forest-fire/typed-conversions",
   "author": "Ken Snyder <ken@ken.net>",
-  "keywords": [
-    "firebase",
-    "utility",
-    "typescript"
-  ],
-  "files": [
-    "lib"
-  ],
+  "keywords": ["firebase", "utility", "typescript"],
+  "files": ["lib", "dist"],
   "main": "lib/index.js",
+  "browser": "dist/typed-conversions.min.js",
+  "module": "dist/typed-conversions.es.js",
   "typings": "lib/index.d.ts",
   "scripts": {
     "clean": "rimraf lib",
     "lint": "tslint --force --format verbose \"src/**/*.ts\"",
-    "build": "npm run clean && npm run lint && echo Using TypeScript && tsc --version && tsc --pretty",
-    "test": "npm run build && mocha --compilers ts:ts-node/register --recursive 'test/**/*-spec.ts'",
-    "coverage": "nyc --include='src/**/*.ts' --reporter=text --reporter=html --reporter=lcov mocha --compilers ts:ts-node/register --recursive 'test/**/*.test.ts'",
+    "build":
+      "npm run clean && npm run lint && echo Using TypeScript && tsc --version && tsc --pretty && bili lib/index.js --format umd-min,es",
+    "test":
+      "npm run build && mocha --compilers ts:ts-node/register --recursive 'test/**/*-spec.ts'",
+    "coverage":
+      "nyc --include='src/**/*.ts' --reporter=text --reporter=html --reporter=lcov mocha --compilers ts:ts-node/register --recursive 'test/**/*.test.ts'",
     "watch": "npm run build -- --watch",
     "watch:test": "npm run test -- --watch"
   },
@@ -35,6 +34,7 @@
     "@types/node": "^6.0.0",
     "@types/shelljs": "^0.7.1",
     "@types/stack-trace": "^0.0.28",
+    "bili": "^3.1.2",
     "chai": "^3.0.0",
     "coveralls": "^2.0.0",
     "firebase-admin": "5.1.0",
@@ -50,18 +50,10 @@
     "node": ">=4.0.0"
   },
   "nyc": {
-    "include": [
-      "src/**/*.ts"
-    ],
-    "exclude": [
-      "lib"
-    ],
-    "extension": [
-      ".ts"
-    ],
-    "require": [
-      "ts-node/register"
-    ],
+    "include": ["src/**/*.ts"],
+    "exclude": ["lib"],
+    "extension": [".ts"],
+    "require": ["ts-node/register"],
     "reporter": [],
     "all": true
   }

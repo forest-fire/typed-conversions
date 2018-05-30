@@ -1,24 +1,25 @@
-import { IDictionary } from 'common-types';
+import { IDictionary } from "common-types";
+export { IDictionary } from "common-types";
 
 export interface ISnapShot {
   val: () => any;
   key: string;
-  forEach( mapper: (child: ISnapShot) => boolean): void;
+  forEach(mapper: (child: ISnapShot) => boolean): void;
 }
 
 export function hashToArray<T = IDictionary>(
   hashObj: IDictionary<any>,
-  __key__: string = 'id'
+  __key__: string = "id"
 ) {
-  if (hashObj && typeof hashObj !== 'object') {
-    throw new Error('Cant convert hash-to-array because hash was not passed in: ' + hashObj);
+  if (hashObj && typeof hashObj !== "object") {
+    throw new Error(
+      "Cant convert hash-to-array because hash was not passed in: " + hashObj
+    );
   }
   const hash: IDictionary = { ...{}, ...hashObj };
   const results: T[] = [];
   Object.keys(hash).forEach(key => {
-    const newProps = typeof hash[key] === 'object'
-      ? hash[key]
-      : { value: hash[key] };
+    const newProps = typeof hash[key] === "object" ? hash[key] : { value: hash[key] };
     const obj: IDictionary = { ...{}, ...newProps };
     obj[__key__] = key;
     results.push(obj as T);
@@ -30,20 +31,17 @@ export function flatten(list: any[]): any[] {
   return list.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
 }
 
-export function arrayToHash<T = IDictionary>(
-  list: any[],
-  __key__: string = 'id'
-) {
+export function arrayToHash<T = IDictionary>(list: any[], __key__: string = "id") {
   if (!Array.isArray(list)) {
     throw new Error(`arrayToHash: input was not an array!`);
   }
 
   return list.reduce((acc, record) => {
-    const recordNoId = { ...{}, ...record};
+    const recordNoId = { ...{}, ...record };
     delete recordNoId[__key__];
     return Object.keys(recordNoId).length === 1 && recordNoId.value
-      ? { ...acc, ...{[record[__key__]]: recordNoId.value} }
-      : { ...acc, ...{[record[__key__]]: recordNoId} };
+      ? { ...acc, ...{ [record[__key__]]: recordNoId.value } }
+      : { ...acc, ...{ [record[__key__]]: recordNoId } };
   }, new Object());
 }
 
@@ -56,7 +54,7 @@ export function arrayToHash<T = IDictionary>(
  */
 export function snapshotToArray<T = IDictionary>(
   snap: ISnapShot,
-  idProp: string = 'id'
+  idProp: string = "id"
 ): T[] {
   const hash: IDictionary = snap.val() || {};
 
@@ -72,12 +70,14 @@ export function snapshotToArray<T = IDictionary>(
  */
 export function snapshotToHash<T = IDictionary>(
   snap: ISnapShot,
-  idProp: string = 'id'
+  idProp: string = "id"
 ): T {
   const hash: IDictionary = snap.val() || {};
-  Object.keys(hash).forEach(key => typeof hash[key] === 'object'
-   ? hash[key][idProp] = key
-   : hash[key] = { [idProp]: key, value: hash[key] }
+  Object.keys(hash).forEach(
+    key =>
+      typeof hash[key] === "object"
+        ? (hash[key][idProp] = key)
+        : (hash[key] = { [idProp]: key, value: hash[key] })
   );
   return hash as T;
 }
@@ -89,16 +89,16 @@ export function snapshotToHash<T = IDictionary>(
  */
 export function snapshotToOrderedArray<T = IDictionary>(
   snap: ISnapShot,
-  idProp = 'id'
+  idProp = "id"
 ): T[] {
   const output: T[] = [];
   snap.forEach((child: ISnapShot) => {
     const obj: any = child.val();
     const key: string = child.key;
-    if (typeof obj !== 'object' ) {
+    if (typeof obj !== "object") {
       throw new Error(`Can't create a list from scalar values: "${obj}" | "${key}"`);
     }
-    output.push( { ...{[idProp]: key }, ...obj } );
+    output.push({ ...{ [idProp]: key }, ...obj });
 
     return true;
   });
@@ -108,7 +108,8 @@ export function snapshotToOrderedArray<T = IDictionary>(
 
 export function snapshotToOrderedHash<T = IDictionary>(
   snap: ISnapShot,
-  idProp = 'id'): IDictionary<T> {
+  idProp = "id"
+): IDictionary<T> {
   const orderedArray = this.snapshotToOrderedArray(snap, idProp);
   return this.arrayToHash(orderedArray);
 }
