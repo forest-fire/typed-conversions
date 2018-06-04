@@ -177,7 +177,7 @@ export function snapshotToOrderedHash<T = IDictionary>(
  * @param dictionary A dictionary of a structured type
  * @param property Which property in each dictionary item are we getting
  */
-export function getPropertiesAcrossDictionaryItems<T>(
+export function getPropertyAcrossDictionaryItems<T>(
   dictionary: IDictionary<T>,
   property: string
 ) {

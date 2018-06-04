@@ -31,6 +31,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var get = require("lodash.get");
+
 function removeIdPropertyFromHash(hash) {
   var idProp = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "id";
   var output = {};
@@ -167,3 +169,17 @@ function snapshotToOrderedHash(snap) {
 }
 
 exports.snapshotToOrderedHash = snapshotToOrderedHash;
+
+function getPropertyAcrossDictionaryItems(dictionary, property) {
+  var output = [];
+  Object.keys(dictionary).map(function (item) {
+    var value = get(dictionary[item], property, undefined);
+
+    if (value !== undefined) {
+      output.push(value);
+    }
+  });
+  return output;
+}
+
+exports.getPropertyAcrossDictionaryItems = getPropertyAcrossDictionaryItems;

@@ -295,3 +295,27 @@ describe("flatten()", () => {
     expect(convert.flatten(arrayOfPromises).length).to.equal(6);
   });
 });
+
+describe("others > ", () => {
+  it("getPropertiesAcrossDictionaryItems works with a populated dictionary", async () => {
+    const dictionary = {
+      abc: {
+        name: "foo",
+        meta: {
+          thingy: 1
+        }
+      },
+      cdf: {
+        name: "foo",
+        meta: {
+          thingy: 2
+        }
+      }
+    };
+    const converted = convert.getPropertyAcrossDictionaryItems(dictionary, "meta.thingy");
+    expect(converted).to.be.an("array");
+    expect(converted).to.have.lengthOf(2);
+    expect(converted).to.contain(1);
+    expect(converted).to.contain(2);
+  });
+});

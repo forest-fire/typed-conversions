@@ -12,3 +12,4 @@ export declare function snapshotToArray<T = IDictionary>(snap: ISnapShot, idProp
 export declare function snapshotToHash<T = IDictionary>(snap: ISnapShot, idProp?: string): T;
 export declare function snapshotToOrderedArray<T = IDictionary>(snap: ISnapShot, idProp?: string): T[];
 export declare function snapshotToOrderedHash<T = IDictionary>(snap: ISnapShot, idProp?: string): IDictionary<T>;
+export declare function getPropertyAcrossDictionaryItems<T>(dictionary: IDictionary<T>, property: string): any[];
