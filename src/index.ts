@@ -1,5 +1,5 @@
 import { IDictionary } from "common-types";
-
+import get = require("lodash.get");
 export interface ISnapShot {
   val: () => any;
   key: string;
@@ -170,4 +170,24 @@ export function snapshotToOrderedHash<T = IDictionary>(
 ): IDictionary<T> {
   const orderedArray = this.snapshotToOrderedArray(snap, idProp);
   return this.arrayToHash(orderedArray);
+}
+
+/**
+ *
+ * @param dictionary A dictionary of a structured type
+ * @param property Which property in each dictionary item are we getting
+ */
+export function getPropertiesAcrossDictionaryItems<T>(
+  dictionary: IDictionary<T>,
+  property: string
+) {
+  const output: any[] = [];
+  Object.keys(dictionary).map(item => {
+    const value = get(dictionary[item], property, undefined);
+    if (value !== undefined) {
+      output.push(value);
+    }
+  });
+
+  return output;
 }
