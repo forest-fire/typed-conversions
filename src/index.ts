@@ -1,5 +1,4 @@
 import { IDictionary } from "common-types";
-export { IDictionary } from "common-types";
 
 export interface ISnapShot {
   val: () => any;
@@ -7,10 +6,27 @@ export interface ISnapShot {
   forEach(mapper: (child: ISnapShot) => boolean): void;
 }
 
-export function hashToArray<T = IDictionary>(
-  hashObj: IDictionary<any>,
-  __key__: string = "id"
+export function removeIdPropertyFromHash<T = IDictionary>(
+  hash: IDictionary<T>,
+  idProp = "id"
 ) {
+  const output: any = {};
+  Object.keys(hash).map((objId: keyof T) => {
+    const input: IDictionary = hash[objId];
+    output[objId] = {};
+    Object.keys(input).map(prop => {
+      if (prop !== idProp) {
+        output[objId][prop] = input[prop];
+      }
+    });
+  });
+  return output;
+}
+
+export function hashToArray<T = any>(
+  hashObj: IDictionary<T>,
+  __key__: string = "id"
+): T[] {
   if (hashObj && typeof hashObj !== "object") {
     throw new Error(
       "Cant convert hash-to-array because hash was not passed in: " + hashObj
@@ -18,31 +34,73 @@ export function hashToArray<T = IDictionary>(
   }
   const hash: IDictionary = { ...{}, ...hashObj };
   const results: T[] = [];
-  Object.keys(hash).forEach(key => {
-    const newProps = typeof hash[key] === "object" ? hash[key] : { value: hash[key] };
-    const obj: IDictionary = { ...{}, ...newProps };
-    obj[__key__] = key;
-    results.push(obj as T);
+  Object.keys(hash).forEach(id => {
+    const obj = hash[id];
+    const allEqualTrue = (prev: boolean, curr: string) => {
+      return obj[curr] !== true ? false : prev;
+    };
+    const isScalar = Object.keys(obj).reduce(allEqualTrue, true) ? true : false;
+
+    const key = isScalar
+      ? results.push(id as any)
+      : results.push(isScalar ? id : { ...obj, ...{ [__key__]: id } });
   });
   return results;
 }
 
-export function flatten(list: any[]): any[] {
-  return list.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
+export function flatten<T = any>(list: any): T[] {
+  return list.reduce((a: any, b: any) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
 }
 
-export function arrayToHash<T = IDictionary>(list: any[], __key__: string = "id") {
-  if (!Array.isArray(list)) {
-    throw new Error(`arrayToHash: input was not an array!`);
+/**
+ * arrayToHash
+ *
+ * Converts an array of things into a hash/dictionary where "things" is a consistent
+ * type of data structure (can be either object or primitive)
+ *
+ * @param arr an array of a particular type
+ * @param keyProperty the property that will be used as the dictionaries key
+ */
+export function arrayToHash<T = any>(arr: T[], keyProperty?: keyof T): IDictionary<T> {
+  if (arr.length === 0) {
+    return {};
   }
 
-  return list.reduce((acc, record) => {
-    const recordNoId = { ...{}, ...record };
-    delete recordNoId[__key__];
-    return Object.keys(recordNoId).length === 1 && recordNoId.value
-      ? { ...acc, ...{ [record[__key__]]: recordNoId.value } }
-      : { ...acc, ...{ [record[__key__]]: recordNoId } };
-  }, new Object());
+  const isScalar: boolean = typeof arr[0] === "object" ? false : true;
+  if (isScalar && keyProperty) {
+    const e = new Error(
+      `You can not have an array of primitive values AND set a keyProperty!`
+    );
+    e.name = "NotAllowed";
+    throw e;
+  }
+
+  if (!keyProperty && !isScalar) {
+    if (arr[0].hasOwnProperty("id")) {
+      keyProperty = "id" as keyof T;
+    } else {
+      const e = new Error(
+        `Tried to default to a keyProperty of "id" but that property does not appear to be in the array passed in`
+      );
+      e.name = "NotAllowed";
+      throw e;
+    }
+  }
+
+  if (!Array.isArray(arr)) {
+    const e = new Error(`arrayToHash: input was not an array!`);
+    e.name = "NotAllowed";
+    throw e;
+  }
+
+  const output: IDictionary<T> = arr.reduce((prev, curr) => {
+    const key = isScalar ? curr : curr[keyProperty];
+    return isScalar
+      ? { ...prev, ...{ [key as any]: true } }
+      : { ...prev, ...{ [key as any]: curr } };
+  }, {});
+
+  return output;
 }
 
 /**

@@ -31,6 +31,23 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+function removeIdPropertyFromHash(hash) {
+  var idProp = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "id";
+  var output = {};
+  Object.keys(hash).map(function (objId) {
+    var input = hash[objId];
+    output[objId] = {};
+    Object.keys(input).map(function (prop) {
+      if (prop !== idProp) {
+        output[objId][prop] = input[prop];
+      }
+    });
+  });
+  return output;
+}
+
+exports.removeIdPropertyFromHash = removeIdPropertyFromHash;
+
 function hashToArray(hashObj) {
   var __key__ = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "id";
 
@@ -40,13 +57,15 @@ function hashToArray(hashObj) {
 
   var hash = Object.assign({}, hashObj);
   var results = [];
-  Object.keys(hash).forEach(function (key) {
-    var newProps = _typeof(hash[key]) === "object" ? hash[key] : {
-      value: hash[key]
+  Object.keys(hash).forEach(function (id) {
+    var obj = hash[id];
+
+    var allEqualTrue = function allEqualTrue(prev, curr) {
+      return obj[curr] !== true ? false : prev;
     };
-    var obj = Object.assign({}, newProps);
-    obj[__key__] = key;
-    results.push(obj);
+
+    var isScalar = Object.keys(obj).reduce(allEqualTrue, true) ? true : false;
+    var key = isScalar ? results.push(id) : results.push(isScalar ? id : Object.assign({}, obj, _defineProperty({}, __key__, id)));
   });
   return results;
 }
@@ -61,18 +80,42 @@ function flatten(list) {
 
 exports.flatten = flatten;
 
-function arrayToHash(list) {
-  var __key__ = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "id";
-
-  if (!Array.isArray(list)) {
-    throw new Error("arrayToHash: input was not an array!");
+function arrayToHash(arr, keyProperty) {
+  if (arr.length === 0) {
+    return {};
   }
 
-  return list.reduce(function (acc, record) {
-    var recordNoId = Object.assign({}, record);
-    delete recordNoId[__key__];
-    return Object.keys(recordNoId).length === 1 && recordNoId.value ? Object.assign({}, acc, _defineProperty({}, record[__key__], recordNoId.value)) : Object.assign({}, acc, _defineProperty({}, record[__key__], recordNoId));
-  }, new Object());
+  var isScalar = _typeof(arr[0]) === "object" ? false : true;
+
+  if (isScalar && keyProperty) {
+    var e = new Error("You can not have an array of primitive values AND set a keyProperty!");
+    e.name = "NotAllowed";
+    throw e;
+  }
+
+  if (!keyProperty && !isScalar) {
+    if (arr[0].hasOwnProperty("id")) {
+      keyProperty = "id";
+    } else {
+      var _e = new Error("Tried to default to a keyProperty of \"id\" but that property does not appear to be in the array passed in");
+
+      _e.name = "NotAllowed";
+      throw _e;
+    }
+  }
+
+  if (!Array.isArray(arr)) {
+    var _e2 = new Error("arrayToHash: input was not an array!");
+
+    _e2.name = "NotAllowed";
+    throw _e2;
+  }
+
+  var output = arr.reduce(function (prev, curr) {
+    var key = isScalar ? curr : curr[keyProperty];
+    return isScalar ? Object.assign({}, prev, _defineProperty({}, key, true)) : Object.assign({}, prev, _defineProperty({}, key, curr));
+  }, {});
+  return output;
 }
 
 exports.arrayToHash = arrayToHash;
