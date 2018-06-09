@@ -67,7 +67,12 @@ function hashToArray(hashObj) {
     };
 
     var isScalar = Object.keys(obj).reduce(allEqualTrue, true) ? true : false;
-    var key = isScalar ? results.push(id) : results.push(isScalar ? id : Object.assign({}, obj, _defineProperty({}, __key__, id)));
+    var isSimpleArray = Object.keys(obj).every(function (i) {
+      return hash[i] === true;
+    });
+    var key = isScalar ? isSimpleArray ? results.push(id) : results.push(Object.assign(_defineProperty({}, __key__, id), {
+      value: hash[id]
+    })) : results.push(isScalar ? id : Object.assign({}, obj, _defineProperty({}, __key__, id)));
   });
   return results;
 }

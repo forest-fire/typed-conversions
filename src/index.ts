@@ -11,7 +11,7 @@ export function removeIdPropertyFromHash<T = IDictionary>(
   idProp = "id"
 ) {
   const output: any = {};
-  Object.keys(hash).map((objId: keyof T) => {
+  Object.keys(hash).map((objId: Extract<keyof T, string>) => {
     const input: IDictionary = hash[objId];
     output[objId] = {};
     Object.keys(input).map(prop => {
@@ -23,10 +23,25 @@ export function removeIdPropertyFromHash<T = IDictionary>(
   return output;
 }
 
+/**
+ * hashToArray
+ *
+ * Converts a hash data structure of {key: value, key2: value2} to an
+ * array of [ {id, value}, {id2, value2} ]. This should happen regardless
+ * to whether the values are themselves hashes (which they often are) or
+ * scalar values.
+ *
+ * The one edge case is where all the hashes passed in have a value of "true"
+ * which indicates that this really just a simple value based array encoded as
+ * a hash (as is often the case in Firebase for FK relationships).
+ *
+ * @param hashObj an object of keys that point to some data payload
+ * @param ___key__ the property name on the converted array-of-hashes which will contain the key value; by default this is "id"
+ */
 export function hashToArray<T = any>(
-  hashObj: IDictionary<T>,
-  __key__: string = "id"
-): T[] {
+  hashObj: IDictionary<T> | IDictionary<string> | IDictionary<number>,
+  __key__: keyof (T & { id: string }) = "id"
+) {
   if (hashObj && typeof hashObj !== "object") {
     throw new Error(
       "Cant convert hash-to-array because hash was not passed in: " + hashObj
@@ -40,9 +55,12 @@ export function hashToArray<T = any>(
       return obj[curr] !== true ? false : prev;
     };
     const isScalar = Object.keys(obj).reduce(allEqualTrue, true) ? true : false;
+    const isSimpleArray = Object.keys(obj).every(i => hash[i] === true);
 
     const key = isScalar
-      ? results.push(id as any)
+      ? isSimpleArray
+        ? results.push(id as any)
+        : results.push({ ...{ [__key__]: id }, ...{ value: hash[id] } } as any)
       : results.push(isScalar ? id : { ...obj, ...{ [__key__]: id } });
   });
   return results;
@@ -178,9 +196,9 @@ export function snapshotToOrderedHash<T = IDictionary>(
  * @param property Which property in each dictionary item are we getting
  */
 export function getPropertyAcrossDictionaryItems<T>(
-  dictionary: IDictionary<T>,
+  dictionary: IDictionary,
   property: string
-) {
+): T[] {
   const output: any[] = [];
   Object.keys(dictionary).map(item => {
     const value = get(dictionary[item], property, undefined);

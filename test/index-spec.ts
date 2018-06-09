@@ -2,6 +2,7 @@ import convert = require("../src/index");
 import * as helpers from "./testing/helpers";
 import * as chai from "chai";
 import { removeIdPropertyFromHash } from "../src/index";
+import { INameValuePair } from "common-types";
 
 const expect = chai.expect;
 
@@ -121,34 +122,38 @@ describe("hashToArray()", () => {
     expect(converted.filter(i => i.age === 22).length).to.equal(2);
   });
 
-  // it("works with an 'id' conflict", () => {
-  //   const converted = convert.hashToArray(conflictedHash);
-  //   console.log(converted);
+  it("works with an 'id' conflict", () => {
+    const converted = convert.hashToArray(conflictedHash);
+    console.log(converted);
 
-  //   expect(converted).to.be.an("array");
-  //   expect(converted.length).to.equal(Object.keys(conflictedHash).length);
-  //   expect(converted.filter(i => i.age === 22).length).to.equal(3);
-  //   expect(converted.map(c => c.id)).includes("-K13129djdf");
-  //   expect(converted.map(c => c.id)).not.includes("1341");
-  // });
+    expect(converted).to.be.an("array");
+    expect(converted.length).to.equal(Object.keys(conflictedHash).length);
+    expect(converted.filter(i => i.age === 22).length).to.equal(3);
+    expect(converted.map(c => c.id)).includes("-K13129djdf");
+    expect(converted.map(c => c.id)).not.includes("1341");
+  });
 
-  // it("works with an alternate ID property", () => {
-  //   const converted = convert.hashToArray(conflictedHash, "_id");
-  //   expect(converted).to.be.an("array");
-  //   expect(converted.length).to.equal(Object.keys(conflictedHash).length);
-  //   expect(converted.filter(i => i.age === 22).length).to.equal(3);
-  //   expect(converted.map(c => c._id)).includes("-K13129djdf");
-  //   expect(converted.map(c => c._id)).not.includes("1341");
-  // });
+  it("works with an alternate ID property", () => {
+    const converted = convert.hashToArray(conflictedHash, "_id");
+    expect(converted).to.be.an("array");
+    expect(converted.length).to.equal(Object.keys(conflictedHash).length);
+    expect(converted.filter(i => i.age === 22).length).to.equal(3);
+    expect(converted.map(c => c._id)).includes("-K13129djdf");
+    expect(converted.map(c => c._id)).not.includes("1341");
+  });
 
-  // it("scalar name/value pairing converts to an name/value dictionary", () => {
-  //   const converted = convert.hashToArray<string>(scalarHash);
-  //   expect(converted).to.be.an("array");
-  //   expect(converted.length).to.equal(Object.keys(scalarHash).length);
-  //   Object.keys(scalarHash).map(key => {
-  //     expect(converted.includes(key).to.equal(true);
-  //   });
-  // });
+  it("scalar name/value pairing converts to an name/value dictionary", () => {
+    const converted = convert.hashToArray<INameValuePair>(scalarHash);
+    expect(converted).to.be.an("array");
+
+    expect(converted.length).to.equal(Object.keys(scalarHash).length);
+    converted.map(item => {
+      expect(item).to.be.an("object");
+      expect(item).to.haveOwnProperty("id");
+      expect(item).to.haveOwnProperty("value");
+      expect(item.value).to.be.a("number");
+    });
+  });
 
   it("scalar keys mapped to true returns a simple array", () => {
     const converted = convert.hashToArray(scalarArray);
