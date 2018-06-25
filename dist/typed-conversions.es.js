@@ -50,6 +50,17 @@ function removeIdPropertyFromHash(hash) {
 
 exports.removeIdPropertyFromHash = removeIdPropertyFromHash;
 
+function keyValueDictionaryToArray(dict) {
+  return Object.keys(dict).reduce(function (result, key) {
+    return result.concat({
+      key: key,
+      value: dict[key]
+    });
+  }, []);
+}
+
+exports.keyValueDictionaryToArray = keyValueDictionaryToArray;
+
 function hashToArray(hashObj) {
   var __key__ = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "id";
 

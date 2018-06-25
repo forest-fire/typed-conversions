@@ -129,17 +129,30 @@ describe("hashToArray()", () => {
     expect(converted).to.be.an("array");
     expect(converted.length).to.equal(Object.keys(conflictedHash).length);
     expect(converted.filter(i => i.age === 22).length).to.equal(3);
-    expect(converted.map(c => c.id)).includes("-K13129djdf");
-    expect(converted.map(c => c.id)).not.includes("1341");
+    expect(converted.map((c: any) => c.id)).includes("-K13129djdf");
+    expect(converted.map((c: any) => c.id)).not.includes("1341");
   });
 
   it("works with an alternate ID property", () => {
-    const converted = convert.hashToArray(conflictedHash, "_id");
+    const converted = convert.hashToArray(conflictedHash, "_id" as any);
     expect(converted).to.be.an("array");
     expect(converted.length).to.equal(Object.keys(conflictedHash).length);
     expect(converted.filter(i => i.age === 22).length).to.equal(3);
-    expect(converted.map(c => c._id)).includes("-K13129djdf");
-    expect(converted.map(c => c._id)).not.includes("1341");
+    expect(converted.map((c: any) => c._id)).includes("-K13129djdf");
+    expect(converted.map((c: any) => c._id)).not.includes("1341");
+  });
+
+  it.only("scalar name/value converts to array of name value", () => {
+    const converted = convert.keyValueDictionaryToArray(scalarHash);
+    expect(converted).to.be.an("array");
+    expect(converted.length).to.equal(Object.keys(scalarHash).length);
+
+    converted.map(item => {
+      expect(item).to.be.an("object");
+      expect(item).to.haveOwnProperty("key");
+      expect(item).to.haveOwnProperty("value");
+      expect(item.value).to.be.a("number");
+    });
   });
 
   it("scalar name/value pairing converts to an name/value dictionary", () => {
@@ -147,6 +160,8 @@ describe("hashToArray()", () => {
     expect(converted).to.be.an("array");
 
     expect(converted.length).to.equal(Object.keys(scalarHash).length);
+    console.log(converted);
+
     converted.map(item => {
       expect(item).to.be.an("object");
       expect(item).to.haveOwnProperty("id");

@@ -5,6 +5,7 @@ export interface ISnapShot {
     forEach(mapper: (child: ISnapShot) => boolean): void;
 }
 export declare function removeIdPropertyFromHash<T = IDictionary>(hash: IDictionary<T>, idProp?: string): any;
+export declare function keyValueDictionaryToArray<T = any>(dict: IDictionary<T>): any[];
 export declare function hashToArray<T = any>(hashObj: IDictionary<T> | IDictionary<string> | IDictionary<number>, __key__?: keyof (T & {
     id: string;
 })): T[];

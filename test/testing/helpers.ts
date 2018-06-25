@@ -1,24 +1,24 @@
-import './test-console'; // TS declaration
-import { IDictionary } from 'common-types';
-import { first, last } from 'lodash';
-import * as fs from 'fs';
-import * as yaml from 'js-yaml';
-import * as process from 'process';
-export { first, last } from 'lodash';
+// tslint:disable:no-implicit-dependencies
+import "./test-console"; // TS declaration
+import { IDictionary } from "common-types";
+import { first, last } from "lodash";
+import * as fs from "fs";
+import * as yaml from "js-yaml";
+import * as process from "process";
+export { first, last } from "lodash";
 export function setupEnv() {
-
-  if (! process.env.AWS_STAGE) {
-    process.env.AWS_STAGE = 'test';
+  if (!process.env.AWS_STAGE) {
+    process.env.AWS_STAGE = "test";
   }
   const current = process.env;
-  const yamlConfig = yaml.safeLoad(fs.readFileSync('./env.yml', 'utf8'));
+  const yamlConfig: IDictionary = yaml.safeLoad(fs.readFileSync("./env.yml", "utf8"));
   const combined = {
     ...yamlConfig[process.env.AWS_STAGE],
     ...process.env
   };
 
   console.log(`Loading ENV for "${process.env.AWS_STAGE}"`);
-  Object.keys(combined).forEach(key => process.env[key] = combined[key]);
+  Object.keys(combined).forEach(key => (process.env[key] = combined[key]));
   return combined;
 }
 

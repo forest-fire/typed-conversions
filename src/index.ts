@@ -23,6 +23,12 @@ export function removeIdPropertyFromHash<T = IDictionary>(
   return output;
 }
 
+export function keyValueDictionaryToArray<T = any>(dict: IDictionary<T>) {
+  return Object.keys(dict).reduce((result, key) => {
+    return result.concat({ key, value: dict[key] });
+  }, []);
+}
+
 /**
  * hashToArray
  *
@@ -51,6 +57,7 @@ export function hashToArray<T = any>(
   const results: T[] = [];
   Object.keys(hash).forEach(id => {
     const obj = hash[id];
+
     const allEqualTrue = (prev: boolean, curr: string) => {
       return obj[curr] !== true ? false : prev;
     };
