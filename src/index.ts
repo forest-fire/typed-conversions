@@ -34,6 +34,21 @@ export function keyValueDictionaryToArray<T = any>(
   }, []);
 }
 
+export function keyValueArrayToDictionary<T = any>(
+  input: T[],
+  options: IDictionary = {}
+): IDictionary {
+  const __key__ = options.key || "key";
+  const __value__ = options.value || "value";
+  return input.reduce((output: any, curr: IDictionary) => {
+    const key = curr[__key__];
+    const value = curr[__value__];
+
+    output[key] = value;
+    return output;
+  }, {});
+}
+
 /**
  * hashToArray
  *

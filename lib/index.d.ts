@@ -6,6 +6,7 @@ export interface ISnapShot {
 }
 export declare function removeIdPropertyFromHash<T = IDictionary>(hash: IDictionary<T>, idProp?: string): any;
 export declare function keyValueDictionaryToArray<T = any>(dict: IDictionary<T>, options?: IDictionary): any[];
+export declare function keyValueArrayToDictionary<T = any>(input: T[], options?: IDictionary): IDictionary;
 export declare function hashToArray<T = any>(hashObj: IDictionary<T> | IDictionary<string> | IDictionary<number>, __key__?: keyof (T & {
     id: string;
 })): T[];

@@ -66,6 +66,23 @@ function keyValueDictionaryToArray(dict) {
 
 exports.keyValueDictionaryToArray = keyValueDictionaryToArray;
 
+function keyValueArrayToDictionary(input) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  var __key__ = options.key || "key";
+
+  var __value__ = options.value || "value";
+
+  return input.reduce(function (output, curr) {
+    var key = curr[__key__];
+    var value = curr[__value__];
+    output[key] = value;
+    return output;
+  }, {});
+}
+
+exports.keyValueArrayToDictionary = keyValueArrayToDictionary;
+
 function hashToArray(hashObj) {
   var __key__ = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "id";
 

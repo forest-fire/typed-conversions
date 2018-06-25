@@ -142,7 +142,7 @@ describe("hashToArray()", () => {
     expect(converted.map((c: any) => c._id)).not.includes("1341");
   });
 
-  it.only("scalar name/value converts to array of name value", () => {
+  it("scalar name/value converts to array of name value", () => {
     const converted = convert.keyValueDictionaryToArray(scalarHash);
     expect(converted).to.be.an("array");
     expect(converted.length).to.equal(Object.keys(scalarHash).length);
@@ -155,9 +155,10 @@ describe("hashToArray()", () => {
     });
   });
 
-  it.only("scalar name/value converts to array of name value, with key => id", () => {
+  it("scalar name/value converts to array of name value, with key => id", () => {
     const converted = convert.keyValueDictionaryToArray(scalarHash, { key: "id" });
     expect(converted).to.be.an("array");
+
     expect(converted.length).to.equal(Object.keys(scalarHash).length);
 
     converted.map(item => {
@@ -166,6 +167,14 @@ describe("hashToArray()", () => {
       expect(item).to.haveOwnProperty("value");
       expect(item.value).to.be.a("number");
     });
+  });
+
+  it("keyValueDictionaryToArray, keyValueArrayToDictionary are inverses", () => {
+    const converted = convert.keyValueDictionaryToArray(scalarHash, { key: "id" });
+    const convertedBack = convert.keyValueArrayToDictionary(converted, { key: "id" });
+    expect(converted).to.be.an("array");
+    expect(convertedBack).to.be.an("object");
+    expect(JSON.stringify(scalarHash)).to.equal(JSON.stringify(convertedBack));
   });
 
   it("scalar name/value pairing converts to an name/value dictionary", () => {

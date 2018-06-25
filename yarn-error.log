@@ -16,7 +16,7 @@ Platform:
 npm manifest: 
   {
     "name": "typed-conversions",
-    "version": "0.8.3",
+    "version": "0.8.7",
     "description": "typed-conversions",
     "license": "MIT",
     "repository": "https://github.com/forest-fire/typed-conversions",
@@ -4651,7 +4651,7 @@ Lockfile:
 
 Trace: 
   Error: Command failed.
-  Exit code: 1
+  Exit code: 2
   Command: sh
   Arguments: -c npm run build && mocha --compilers ts:ts-node/register --recursive 'test/**/*-spec.ts'
   Directory: /Users/ken/mine/forest-fire/typed-conversions
