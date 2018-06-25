@@ -23,9 +23,14 @@ export function removeIdPropertyFromHash<T = IDictionary>(
   return output;
 }
 
-export function keyValueDictionaryToArray<T = any>(dict: IDictionary<T>) {
+export function keyValueDictionaryToArray<T = any>(
+  dict: IDictionary<T>,
+  options: IDictionary = {}
+) {
+  const __key__ = options.key || "key";
+  const __value__ = options.value || "value";
   return Object.keys(dict).reduce((result, key) => {
-    return result.concat({ key, value: dict[key] });
+    return result.concat({ [__key__]: key, [__value__]: dict[key] });
   }, []);
 }
 

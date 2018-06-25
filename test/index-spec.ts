@@ -155,6 +155,19 @@ describe("hashToArray()", () => {
     });
   });
 
+  it.only("scalar name/value converts to array of name value, with key => id", () => {
+    const converted = convert.keyValueDictionaryToArray(scalarHash, { key: "id" });
+    expect(converted).to.be.an("array");
+    expect(converted.length).to.equal(Object.keys(scalarHash).length);
+
+    converted.map(item => {
+      expect(item).to.be.an("object");
+      expect(item).to.haveOwnProperty("id");
+      expect(item).to.haveOwnProperty("value");
+      expect(item.value).to.be.a("number");
+    });
+  });
+
   it("scalar name/value pairing converts to an name/value dictionary", () => {
     const converted = convert.hashToArray<INameValuePair>(scalarHash);
     expect(converted).to.be.an("array");
