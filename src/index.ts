@@ -27,7 +27,7 @@ export function keyValueDictionaryToArray<T = any>(
   dict: IDictionary<T>,
   options: IDictionary = {}
 ) {
-  const __key__ = options.key || "key";
+  const __key__ = options.key || "id";
   const __value__ = options.value || "value";
   return Object.keys(dict).reduce((result, key) => {
     return result.concat({ [__key__]: key, [__value__]: dict[key] });
@@ -75,20 +75,19 @@ export function hashToArray<T = any>(
   }
   const hash: IDictionary = { ...{}, ...hashObj };
   const results: T[] = [];
-  Object.keys(hash).forEach(id => {
-    const obj = hash[id];
+  const isHashArray = Object.keys(hash).every(i => hash[i] === true);
+  const isHashValue = Object.keys(hash).every(i => typeof hash[i] !== "object");
+  console.log(isHashArray, isHashValue);
 
-    const allEqualTrue = (prev: boolean, curr: string) => {
-      return obj[curr] !== true ? false : prev;
-    };
-    const isScalar = Object.keys(obj).reduce(allEqualTrue, true) ? true : false;
-    const isSimpleArray = Object.keys(obj).every(i => hash[i] === true);
+  Object.keys(hash).map(id => {
+    const obj =
+      typeof hash[id] === "object"
+        ? { ...hash[id], [__key__]: id }
+        : isHashArray
+          ? id
+          : { [__key__]: id, value: hash[id] };
 
-    const key = isScalar
-      ? isSimpleArray
-        ? results.push(id as any)
-        : results.push({ ...{ [__key__]: id }, ...{ value: hash[id] } } as any)
-      : results.push(isScalar ? id : { ...obj, ...{ [__key__]: id } });
+    results.push(obj);
   });
   return results;
 }

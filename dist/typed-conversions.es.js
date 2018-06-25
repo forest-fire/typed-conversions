@@ -53,7 +53,7 @@ exports.removeIdPropertyFromHash = removeIdPropertyFromHash;
 function keyValueDictionaryToArray(dict) {
   var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-  var __key__ = options.key || "key";
+  var __key__ = options.key || "id";
 
   var __value__ = options.value || "value";
 
@@ -92,20 +92,18 @@ function hashToArray(hashObj) {
 
   var hash = Object.assign({}, hashObj);
   var results = [];
-  Object.keys(hash).forEach(function (id) {
-    var obj = hash[id];
+  var isHashArray = Object.keys(hash).every(function (i) {
+    return hash[i] === true;
+  });
+  var isHashValue = Object.keys(hash).every(function (i) {
+    return _typeof(hash[i]) !== "object";
+  });
+  console.log(isHashArray, isHashValue);
+  Object.keys(hash).map(function (id) {
+    var _ref;
 
-    var allEqualTrue = function allEqualTrue(prev, curr) {
-      return obj[curr] !== true ? false : prev;
-    };
-
-    var isScalar = Object.keys(obj).reduce(allEqualTrue, true) ? true : false;
-    var isSimpleArray = Object.keys(obj).every(function (i) {
-      return hash[i] === true;
-    });
-    var key = isScalar ? isSimpleArray ? results.push(id) : results.push(Object.assign(_defineProperty({}, __key__, id), {
-      value: hash[id]
-    })) : results.push(isScalar ? id : Object.assign({}, obj, _defineProperty({}, __key__, id)));
+    var obj = _typeof(hash[id]) === "object" ? Object.assign({}, hash[id], _defineProperty({}, __key__, id)) : isHashArray ? id : (_ref = {}, _defineProperty(_ref, __key__, id), _defineProperty(_ref, "value", hash[id]), _ref);
+    results.push(obj);
   });
   return results;
 }

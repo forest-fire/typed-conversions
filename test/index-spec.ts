@@ -28,7 +28,7 @@ const basicHashWithId = {
   "-K13128djdf": { name: "Lucy", age: 22, id: "-K13128djdf" }
 };
 
-const scalarHash = {
+const scalarHash = () => ({
   "-K13121djdf": 100,
   "-K13122djdf": 105,
   "-K13123djdf": 8,
@@ -37,9 +37,9 @@ const scalarHash = {
   "-K13126djdf": 300,
   "-K13127djdf": 200,
   "-K13128djdf": 150
-};
+});
 
-const scalarArray = {
+const scalarArray = () => ({
   "-K13121djdf": true,
   "-K13122djdf": true,
   "-K13123djdf": true,
@@ -48,7 +48,7 @@ const scalarArray = {
   "-K13126djdf": true,
   "-K13127djdf": true,
   "-K13128djdf": true
-};
+});
 
 const conflictedHash = {
   ...basicHash,
@@ -76,7 +76,7 @@ const valueSnapshot = {
 
 const scalarSnapshot = {
   key: "foobar",
-  val: () => scalarHash
+  val: () => scalarHash()
 };
 
 const listOfScalar = {
@@ -143,7 +143,7 @@ describe("hashToArray()", () => {
   });
 
   it("scalar name/value converts to array of name value", () => {
-    const converted = convert.keyValueDictionaryToArray(scalarHash);
+    const converted = convert.keyValueDictionaryToArray(scalarHash, { key: "key" });
     expect(converted).to.be.an("array");
     expect(converted.length).to.equal(Object.keys(scalarHash).length);
 
@@ -151,15 +151,49 @@ describe("hashToArray()", () => {
       expect(item).to.be.an("object");
       expect(item).to.haveOwnProperty("key");
       expect(item).to.haveOwnProperty("value");
+
       expect(item.value).to.be.a("number");
     });
   });
 
-  it("scalar name/value converts to array of name value, with key => id", () => {
-    const converted = convert.keyValueDictionaryToArray(scalarHash, { key: "id" });
+  it("hashToArray() detects and converts a hashValue data stucture to a key value structure", async () => {
+    const data = {
+      "-LFsnvrP4aDu3wcbxfVk": 1529961496026,
+      "-LFsnvrvoavTDlWzdoPL": 1529961496059,
+      "-LFsnvsq2FDo48xxRzmO": 1529961496118,
+      "-LFsnvswzAKs8hgu6B7R": 1529961496124,
+      "-LFsnvt2hq28zZHeddyn": 1529961496131
+    };
+    const converted = convert.hashToArray(data);
+    expect(converted)
+      .to.be.an("array")
+      .and.to.have.lengthOf(5);
+    expect(converted[0])
+      .to.be.an("object")
+      .and.to.haveOwnProperty("id")
+      .and.to.haveOwnProperty("value");
+  });
+
+  it("hashToArray() detects and converts a hashArray to a simple array", async () => {
+    const data = {
+      "-LFsnvrP4aDu3wcbxfVk": true,
+      "-LFsnvrvoavTDlWzdoPL": true,
+      "-LFsnvsq2FDo48xxRzmO": true,
+      "-LFsnvswzAKs8hgu6B7R": true,
+      "-LFsnvt2hq28zZHeddyn": true
+    };
+    const converted = convert.hashToArray(data);
+    expect(converted)
+      .to.be.an("array")
+      .and.to.have.lengthOf(5);
+    expect(converted[0]).to.be.a("string");
+  });
+
+  it("scalar name/value converts to array of name value", () => {
+    const converted = convert.keyValueDictionaryToArray(scalarHash());
     expect(converted).to.be.an("array");
 
-    expect(converted.length).to.equal(Object.keys(scalarHash).length);
+    expect(converted.length).to.equal(Object.keys(scalarHash()).length);
 
     converted.map(item => {
       expect(item).to.be.an("object");
@@ -170,18 +204,18 @@ describe("hashToArray()", () => {
   });
 
   it("keyValueDictionaryToArray, keyValueArrayToDictionary are inverses", () => {
-    const converted = convert.keyValueDictionaryToArray(scalarHash, { key: "id" });
+    const converted = convert.keyValueDictionaryToArray(scalarHash(), { key: "id" });
     const convertedBack = convert.keyValueArrayToDictionary(converted, { key: "id" });
     expect(converted).to.be.an("array");
     expect(convertedBack).to.be.an("object");
-    expect(JSON.stringify(scalarHash)).to.equal(JSON.stringify(convertedBack));
+    expect(JSON.stringify(scalarHash())).to.equal(JSON.stringify(convertedBack));
   });
 
   it("scalar name/value pairing converts to an name/value dictionary", () => {
-    const converted = convert.hashToArray<INameValuePair>(scalarHash);
+    const converted = convert.hashToArray<INameValuePair>(scalarHash());
     expect(converted).to.be.an("array");
 
-    expect(converted.length).to.equal(Object.keys(scalarHash).length);
+    expect(converted.length).to.equal(Object.keys(scalarHash()).length);
     console.log(converted);
 
     converted.map(item => {
@@ -193,10 +227,10 @@ describe("hashToArray()", () => {
   });
 
   it("scalar keys mapped to true returns a simple array", () => {
-    const converted = convert.hashToArray(scalarArray);
+    const converted = convert.hashToArray(scalarArray());
     expect(converted).to.be.an("array");
-    expect(converted.length).to.equal(Object.keys(scalarArray).length);
-    Object.keys(scalarArray).map(key => {
+    expect(converted.length).to.equal(Object.keys(scalarArray()).length);
+    Object.keys(scalarArray()).map(key => {
       expect(converted).to.contain(key);
     });
   });
