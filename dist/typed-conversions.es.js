@@ -51,11 +51,16 @@ function removeIdPropertyFromHash(hash) {
 exports.removeIdPropertyFromHash = removeIdPropertyFromHash;
 
 function keyValueDictionaryToArray(dict) {
+  var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+  var __key__ = options.key || "key";
+
+  var __value__ = options.value || "value";
+
   return Object.keys(dict).reduce(function (result, key) {
-    return result.concat({
-      key: key,
-      value: dict[key]
-    });
+    var _result$concat;
+
+    return result.concat((_result$concat = {}, _defineProperty(_result$concat, __key__, key), _defineProperty(_result$concat, __value__, dict[key]), _result$concat));
   }, []);
 }
 
