@@ -98,7 +98,6 @@ function hashToArray(hashObj) {
   var isHashValue = Object.keys(hash).every(function (i) {
     return _typeof(hash[i]) !== "object";
   });
-  console.log(isHashArray, isHashValue);
   Object.keys(hash).map(function (id) {
     var _ref;
 

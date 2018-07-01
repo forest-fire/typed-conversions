@@ -124,7 +124,6 @@ describe("hashToArray()", () => {
 
   it("works with an 'id' conflict", () => {
     const converted = convert.hashToArray(conflictedHash);
-    console.log(converted);
 
     expect(converted).to.be.an("array");
     expect(converted.length).to.equal(Object.keys(conflictedHash).length);
@@ -216,7 +215,6 @@ describe("hashToArray()", () => {
     expect(converted).to.be.an("array");
 
     expect(converted.length).to.equal(Object.keys(scalarHash()).length);
-    console.log(converted);
 
     converted.map(item => {
       expect(item).to.be.an("object");

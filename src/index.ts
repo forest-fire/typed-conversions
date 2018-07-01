@@ -77,7 +77,6 @@ export function hashToArray<T = any>(
   const results: T[] = [];
   const isHashArray = Object.keys(hash).every(i => hash[i] === true);
   const isHashValue = Object.keys(hash).every(i => typeof hash[i] !== "object");
-  console.log(isHashArray, isHashValue);
 
   Object.keys(hash).map(id => {
     const obj =
