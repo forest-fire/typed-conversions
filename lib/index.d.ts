@@ -11,7 +11,8 @@ export declare function hashToArray<T = any>(hashObj: IDictionary<T> | IDictiona
     id: string;
 })): T[];
 export declare function flatten<T = any>(list: any): T[];
-export declare function arrayToHash<T = any>(arr: T[], keyProperty?: keyof T): IDictionary<T>;
+export declare type FunctionProperty<T> = (obj: T) => string;
+export declare function arrayToHash<T = any>(arr: T[], keyProperty?: keyof T | FunctionProperty<T>): IDictionary<T>;
 export declare function snapshotToArray<T = IDictionary>(snap: ISnapShot, idProp?: string): T[];
 export declare function snapshotToHash<T = IDictionary>(snap: ISnapShot, idProp?: string): T;
 export declare function snapshotToOrderedArray<T = IDictionary>(snap: ISnapShot, idProp?: string): T[];

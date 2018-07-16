@@ -95,6 +95,8 @@ export function flatten<T = any>(list: any): T[] {
   return list.reduce((a: any, b: any) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
 }
 
+export type FunctionProperty<T> = (obj: T) => string;
+
 /**
  * arrayToHash
  *
@@ -104,7 +106,10 @@ export function flatten<T = any>(list: any): T[] {
  * @param arr an array of a particular type
  * @param keyProperty the property that will be used as the dictionaries key
  */
-export function arrayToHash<T = any>(arr: T[], keyProperty?: keyof T): IDictionary<T> {
+export function arrayToHash<T = any>(
+  arr: T[],
+  keyProperty?: keyof T | FunctionProperty<T>
+): IDictionary<T> {
   if (arr.length === 0) {
     return {};
   }
@@ -137,7 +142,11 @@ export function arrayToHash<T = any>(arr: T[], keyProperty?: keyof T): IDictiona
   }
 
   const output: IDictionary<T> = arr.reduce((prev, curr) => {
-    const key = isScalar ? curr : curr[keyProperty];
+    const key = isScalar
+      ? curr
+      : typeof keyProperty === "function"
+        ? curr[keyProperty(curr) as keyof T]
+        : curr[keyProperty];
     return isScalar
       ? { ...prev, ...{ [key as any]: true } }
       : { ...prev, ...{ [key as any]: curr } };
