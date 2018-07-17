@@ -149,7 +149,7 @@ function arrayToHash(arr, keyProperty) {
   }
 
   var output = arr.reduce(function (prev, curr) {
-    var key = isScalar ? curr : typeof keyProperty === "function" ? curr[keyProperty(curr)] : curr[keyProperty];
+    var key = isScalar ? curr : typeof keyProperty === "function" ? keyProperty(curr) : curr[keyProperty];
     return isScalar ? Object.assign({}, prev, _defineProperty({}, key, true)) : Object.assign({}, prev, _defineProperty({}, key, curr));
   }, {});
   return output;

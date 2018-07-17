@@ -145,8 +145,9 @@ export function arrayToHash<T = any>(
     const key = isScalar
       ? curr
       : typeof keyProperty === "function"
-        ? curr[keyProperty(curr) as keyof T]
+        ? (keyProperty(curr) as keyof T)
         : curr[keyProperty];
+
     return isScalar
       ? { ...prev, ...{ [key as any]: true } }
       : { ...prev, ...{ [key as any]: curr } };
