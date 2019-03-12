@@ -1,5 +1,5 @@
 import { IDictionary } from "common-types";
-import get = require("lodash.get");
+import { get } from "lodash-es";
 export interface ISnapShot {
   val: () => any;
   key: string;
@@ -83,8 +83,8 @@ export function hashToArray<T = any>(
       typeof hash[id] === "object"
         ? { ...hash[id], [__key__]: id }
         : isHashArray
-          ? id
-          : { [__key__]: id, value: hash[id] };
+        ? id
+        : { [__key__]: id, value: hash[id] };
 
     results.push(obj);
   });
@@ -95,6 +95,8 @@ export function flatten<T = any>(list: any): T[] {
   return list.reduce((a: any, b: any) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
 }
 
+export type FunctionProperty<T> = (obj: T) => string;
+
 /**
  * arrayToHash
  *
@@ -102,9 +104,12 @@ export function flatten<T = any>(list: any): T[] {
  * type of data structure (can be either object or primitive)
  *
  * @param arr an array of a particular type
- * @param keyProperty the property that will be used as the dictionaries key
+ * @param keyProperty the property that will be used as the dictionaries key; if false then will assign a firebase pushkey
  */
-export function arrayToHash<T = any>(arr: T[], keyProperty?: keyof T): IDictionary<T> {
+export function arrayToHash<T = any>(
+  arr: T[],
+  keyProperty?: keyof T | FunctionProperty<T>
+): IDictionary<T> {
   if (arr.length === 0) {
     return {};
   }
@@ -137,7 +142,12 @@ export function arrayToHash<T = any>(arr: T[], keyProperty?: keyof T): IDictiona
   }
 
   const output: IDictionary<T> = arr.reduce((prev, curr) => {
-    const key = isScalar ? curr : curr[keyProperty];
+    const key = isScalar
+      ? curr
+      : typeof keyProperty === "function"
+      ? (keyProperty(curr) as keyof T)
+      : curr[keyProperty];
+
     return isScalar
       ? { ...prev, ...{ [key as any]: true } }
       : { ...prev, ...{ [key as any]: curr } };
@@ -174,11 +184,10 @@ export function snapshotToHash<T = IDictionary>(
   idProp: string = "id"
 ): T {
   const hash: IDictionary = snap.val() || {};
-  Object.keys(hash).forEach(
-    key =>
-      typeof hash[key] === "object"
-        ? (hash[key][idProp] = key)
-        : (hash[key] = { [idProp]: key, value: hash[key] })
+  Object.keys(hash).forEach(key =>
+    typeof hash[key] === "object"
+      ? (hash[key][idProp] = key)
+      : (hash[key] = { [idProp]: key, value: hash[key] })
   );
   return hash as T;
 }
