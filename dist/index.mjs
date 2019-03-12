@@ -1,4 +1,4 @@
-import { get } from 'lodash-es';
+import { get } from 'lodash';
 
 function removeIdPropertyFromHash(hash, idProp = "id") {
   const output = {};
