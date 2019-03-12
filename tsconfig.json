@@ -8,15 +8,12 @@
     "noImplicitAny": true,
     "outDir": "./lib",
     "removeComments": true,
-    "typeRoots": [
-      "./node_modules/@types"
-    ]
+    "typeRoots": ["./node_modules/@types", "manual_typings"],
+    "baseUrl": ".",
+    "paths": { "lodash/*": ["node_modules/@types/lodash-es/*"] },
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules",
-    "**/*-spec.ts"
-  ]
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "**/*-spec.ts"]
 }
