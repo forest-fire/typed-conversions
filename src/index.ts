@@ -1,7 +1,7 @@
 import { IDictionary } from "common-types";
 // tslint:disable:no-submodule-imports
 // tslint:disable-next-line:no-implicit-dependencies
-import { get } from "lodash";
+import { get } from "lodash-es";
 export interface ISnapShot {
   val: () => any;
   key: string;

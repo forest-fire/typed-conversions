@@ -1,5 +1,6 @@
-import convert = require("../src/index");
+import convert = require("../src");
 import * as helpers from "./testing/helpers";
+// tslint:disable-next-line:no-implicit-dependencies
 import * as chai from "chai";
 import { removeIdPropertyFromHash } from "../src/index";
 import { INameValuePair } from "common-types";

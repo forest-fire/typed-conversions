@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "declaration": true,
-    "module": "commonjs",
-    "target": "ES6",
+    "module": "esnext",
+    "target": "es2017",
     "moduleResolution": "node",
     "sourceMap": true,
     "noImplicitAny": true,
-    "outDir": "./dist/cjs",
+    "outDir": "./dist/esnext",
     "removeComments": false,
     "typeRoots": ["./node_modules/@types", "manual_typings"],
     "baseUrl": ".",
