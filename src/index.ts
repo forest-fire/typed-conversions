@@ -1,7 +1,5 @@
 import { IDictionary } from "common-types";
-// tslint:disable:no-submodule-imports
-// tslint:disable-next-line:no-implicit-dependencies
-import { get } from "lodash";
+import get from "get-value";
 export interface ISnapShot {
   val: () => any;
   key: string;
@@ -237,7 +235,7 @@ export function getPropertyAcrossDictionaryItems<T>(
 ): T[] {
   const output: any[] = [];
   Object.keys(dictionary).map(item => {
-    const value = get(dictionary[item], property, undefined);
+    const value = get(dictionary[item], property);
     if (value !== undefined) {
       output.push(value);
     }
