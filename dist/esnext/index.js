@@ -1,6 +1,4 @@
-// tslint:disable:no-submodule-imports
-// tslint:disable-next-line:no-implicit-dependencies
-import { get } from "lodash-es";
+import get from "get-value";
 export function removeIdPropertyFromHash(hash, idProp = "id") {
     const output = {};
     Object.keys(hash).map((objId) => {
@@ -166,7 +164,7 @@ export function snapshotToOrderedHash(snap, idProp = "id") {
 export function getPropertyAcrossDictionaryItems(dictionary, property) {
     const output = [];
     Object.keys(dictionary).map(item => {
-        const value = get(dictionary[item], property, undefined);
+        const value = get(dictionary[item], property);
         if (value !== undefined) {
             output.push(value);
         }

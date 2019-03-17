@@ -1,8 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-// tslint:disable:no-submodule-imports
-// tslint:disable-next-line:no-implicit-dependencies
-const lodash_es_1 = require("lodash-es");
+const get_value_1 = __importDefault(require("get-value"));
 function removeIdPropertyFromHash(hash, idProp = "id") {
     const output = {};
     Object.keys(hash).map((objId) => {
@@ -178,7 +179,7 @@ exports.snapshotToOrderedHash = snapshotToOrderedHash;
 function getPropertyAcrossDictionaryItems(dictionary, property) {
     const output = [];
     Object.keys(dictionary).map(item => {
-        const value = lodash_es_1.get(dictionary[item], property, undefined);
+        const value = get_value_1.default(dictionary[item], property);
         if (value !== undefined) {
             output.push(value);
         }

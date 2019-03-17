@@ -168,10 +168,12 @@ describe("hashToArray()", () => {
     expect(converted)
       .to.be.an("array")
       .and.to.have.lengthOf(5);
-    expect(converted[0])
-      .to.be.an("object")
-      .and.to.haveOwnProperty("id")
-      .and.to.haveOwnProperty("value");
+
+    converted.forEach(c => {
+      expect(c).to.be.an("object");
+      expect(c).to.haveOwnProperty("id");
+      expect(c).to.haveOwnProperty("value");
+    });
   });
 
   it("hashToArray() detects and converts a hashArray to a simple array", async () => {
