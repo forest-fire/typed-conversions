@@ -1,5 +1,6 @@
 import { IDictionary } from "common-types";
 import get from "get-value";
+
 export interface ISnapShot {
   val: () => any;
   key: string;
