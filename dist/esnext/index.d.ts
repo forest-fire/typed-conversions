@@ -34,7 +34,8 @@ export declare type FunctionProperty<T> = (obj: T) => string;
  * type of data structure (can be either object or primitive)
  *
  * @param arr an array of a particular type
- * @param keyProperty the property that will be used as the dictionaries key; if false then will assign a firebase pushkey
+ * @param keyProperty the property that will be used as the dictionaries key; if false
+ * then will assign a firebase pushkey
  */
 export declare function arrayToHash<T = any>(arr: T[], keyProperty?: keyof T | FunctionProperty<T>): IDictionary<T>;
 /**

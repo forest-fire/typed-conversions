@@ -93,7 +93,10 @@ export function hashToArray<T = any>(
 }
 
 export function flatten<T = any>(list: any): T[] {
-  return list.reduce((a: any, b: any) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
+  return list.reduce(
+    (a: any, b: any) => a.concat(Array.isArray(b) ? flatten(b) : b),
+    []
+  );
 }
 
 export type FunctionProperty<T> = (obj: T) => string;
@@ -105,7 +108,8 @@ export type FunctionProperty<T> = (obj: T) => string;
  * type of data structure (can be either object or primitive)
  *
  * @param arr an array of a particular type
- * @param keyProperty the property that will be used as the dictionaries key; if false then will assign a firebase pushkey
+ * @param keyProperty the property that will be used as the dictionaries key; if false
+ * then will assign a firebase pushkey
  */
 export function arrayToHash<T = any>(
   arr: T[],
@@ -207,7 +211,9 @@ export function snapshotToOrderedArray<T = IDictionary>(
     const obj: any = child.val();
     const key: string = child.key;
     if (typeof obj !== "object") {
-      throw new Error(`Can't create a list from scalar values: "${obj}" | "${key}"`);
+      throw new Error(
+        `Can't create a list from scalar values: "${obj}" | "${key}"`
+      );
     }
     output.push({ ...{ [idProp]: key }, ...obj });
 

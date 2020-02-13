@@ -54,7 +54,7 @@ export function hashToArray(hashObj, __key__ = "id") {
     const isHashValue = Object.keys(hash).every(i => typeof hash[i] !== "object");
     Object.keys(hash).map(id => {
         const obj = typeof hash[id] === "object"
-            ? Object.assign({}, hash[id], { [__key__]: id }) : isHashArray
+            ? Object.assign(Object.assign({}, hash[id]), { [__key__]: id }) : isHashArray
             ? id
             : { [__key__]: id, value: hash[id] };
         results.push(obj);
@@ -71,7 +71,8 @@ export function flatten(list) {
  * type of data structure (can be either object or primitive)
  *
  * @param arr an array of a particular type
- * @param keyProperty the property that will be used as the dictionaries key; if false then will assign a firebase pushkey
+ * @param keyProperty the property that will be used as the dictionaries key; if false
+ * then will assign a firebase pushkey
  */
 export function arrayToHash(arr, keyProperty) {
     if (arr.length === 0) {
@@ -105,7 +106,7 @@ export function arrayToHash(arr, keyProperty) {
                 ? keyProperty(curr)
                 : curr[keyProperty];
         return isScalar
-            ? Object.assign({}, prev, { [key]: true }) : Object.assign({}, prev, { [key]: curr });
+            ? Object.assign(Object.assign({}, prev), { [key]: true }) : Object.assign(Object.assign({}, prev), { [key]: curr });
     }, {});
     return output;
 }
