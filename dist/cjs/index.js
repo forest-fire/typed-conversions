@@ -83,9 +83,12 @@ exports.flatten = flatten;
  * @param arr an array of a particular type
  * @param keyProperty the property that will be used as the dictionaries key; if false
  * then will assign a firebase pushkey
+<<<<<<< HEAD
  * @param removeIdProperty allow you to optionally exclude the `id` from the object
  * as it is redundant to the `key` of the hash. By default though, this is _not_ done as
  * Firemodel benefits (and expects) from this duplication.
+=======
+>>>>>>> release/0.10.2
  */
 function arrayToHash(arr, keyProperty, removeIdProperty = false) {
     if (arr.length === 0) {
