@@ -34,9 +34,13 @@ export declare type FunctionProperty<T> = (obj: T) => string;
  * type of data structure (can be either object or primitive)
  *
  * @param arr an array of a particular type
- * @param keyProperty the property that will be used as the dictionaries key; if false then will assign a firebase pushkey
+ * @param keyProperty the property that will be used as the dictionaries key; if false
+ * then will assign a firebase pushkey
+ * @param removeIdProperty allow you to optionally exclude the `id` from the object
+ * as it is redundant to the `key` of the hash. By default though, this is _not_ done as
+ * Firemodel benefits (and expects) from this duplication.
  */
-export declare function arrayToHash<T = any>(arr: T[], keyProperty?: keyof T | FunctionProperty<T>): IDictionary<T>;
+export declare function arrayToHash<T = any>(arr: T[], keyProperty?: keyof T | FunctionProperty<T>, removeIdProperty?: boolean): IDictionary<T>;
 /**
  * Snapshot to Array (unordered)
  *

@@ -93,7 +93,10 @@ export function hashToArray<T = any>(
 }
 
 export function flatten<T = any>(list: any): T[] {
-  return list.reduce((a: any, b: any) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
+  return list.reduce(
+    (a: any, b: any) => a.concat(Array.isArray(b) ? flatten(b) : b),
+    []
+  );
 }
 
 export type FunctionProperty<T> = (obj: T) => string;
@@ -105,11 +108,16 @@ export type FunctionProperty<T> = (obj: T) => string;
  * type of data structure (can be either object or primitive)
  *
  * @param arr an array of a particular type
- * @param keyProperty the property that will be used as the dictionaries key; if false then will assign a firebase pushkey
+ * @param keyProperty the property that will be used as the dictionaries key; if false
+ * then will assign a firebase pushkey
+ * @param removeIdProperty allow you to optionally exclude the `id` from the object
+ * as it is redundant to the `key` of the hash. By default though, this is _not_ done as
+ * Firemodel benefits (and expects) from this duplication.
  */
 export function arrayToHash<T = any>(
   arr: T[],
-  keyProperty?: keyof T | FunctionProperty<T>
+  keyProperty?: keyof T | FunctionProperty<T>,
+  removeIdProperty: boolean = false
 ): IDictionary<T> {
   if (arr.length === 0) {
     return {};
@@ -154,7 +162,7 @@ export function arrayToHash<T = any>(
       : { ...prev, ...{ [key as any]: curr } };
   }, {});
 
-  return output;
+  return removeIdProperty ? removeIdPropertyFromHash(output) : output;
 }
 
 /**
@@ -207,7 +215,9 @@ export function snapshotToOrderedArray<T = IDictionary>(
     const obj: any = child.val();
     const key: string = child.key;
     if (typeof obj !== "object") {
-      throw new Error(`Can't create a list from scalar values: "${obj}" | "${key}"`);
+      throw new Error(
+        `Can't create a list from scalar values: "${obj}" | "${key}"`
+      );
     }
     output.push({ ...{ [idProp]: key }, ...obj });
 

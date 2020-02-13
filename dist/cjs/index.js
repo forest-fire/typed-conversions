@@ -62,7 +62,7 @@ function hashToArray(hashObj, __key__ = "id") {
     const isHashValue = Object.keys(hash).every(i => typeof hash[i] !== "object");
     Object.keys(hash).map(id => {
         const obj = typeof hash[id] === "object"
-            ? Object.assign({}, hash[id], { [__key__]: id }) : isHashArray
+            ? Object.assign(Object.assign({}, hash[id]), { [__key__]: id }) : isHashArray
             ? id
             : { [__key__]: id, value: hash[id] };
         results.push(obj);
@@ -81,9 +81,13 @@ exports.flatten = flatten;
  * type of data structure (can be either object or primitive)
  *
  * @param arr an array of a particular type
- * @param keyProperty the property that will be used as the dictionaries key; if false then will assign a firebase pushkey
+ * @param keyProperty the property that will be used as the dictionaries key; if false
+ * then will assign a firebase pushkey
+ * @param removeIdProperty allow you to optionally exclude the `id` from the object
+ * as it is redundant to the `key` of the hash. By default though, this is _not_ done as
+ * Firemodel benefits (and expects) from this duplication.
  */
-function arrayToHash(arr, keyProperty) {
+function arrayToHash(arr, keyProperty, removeIdProperty = false) {
     if (arr.length === 0) {
         return {};
     }
@@ -115,9 +119,9 @@ function arrayToHash(arr, keyProperty) {
                 ? keyProperty(curr)
                 : curr[keyProperty];
         return isScalar
-            ? Object.assign({}, prev, { [key]: true }) : Object.assign({}, prev, { [key]: curr });
+            ? Object.assign(Object.assign({}, prev), { [key]: true }) : Object.assign(Object.assign({}, prev), { [key]: curr });
     }, {});
-    return output;
+    return removeIdProperty ? removeIdPropertyFromHash(output) : output;
 }
 exports.arrayToHash = arrayToHash;
 /**
