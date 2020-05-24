@@ -3,13 +3,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const get_value_1 = __importDefault(require("get-value"));
+exports.getPropertyAcrossDictionaryItems = exports.snapshotToOrderedHash = exports.snapshotToOrderedArray = exports.snapshotToHash = exports.snapshotToArray = exports.arrayToHash = exports.flatten = exports.hashToArray = exports.keyValueArrayToDictionary = exports.keyValueDictionaryToArray = exports.removeIdPropertyFromHash = void 0;
+const lodash_get_1 = __importDefault(require("lodash.get"));
 function removeIdPropertyFromHash(hash, idProp = "id") {
     const output = {};
     Object.keys(hash).map((objId) => {
         const input = hash[objId];
         output[objId] = {};
-        Object.keys(input).map(prop => {
+        Object.keys(input).map((prop) => {
             if (prop !== idProp) {
                 output[objId][prop] = input[prop];
             }
@@ -58,9 +59,9 @@ function hashToArray(hashObj, __key__ = "id") {
     }
     const hash = Object.assign({}, hashObj);
     const results = [];
-    const isHashArray = Object.keys(hash).every(i => hash[i] === true);
-    const isHashValue = Object.keys(hash).every(i => typeof hash[i] !== "object");
-    Object.keys(hash).map(id => {
+    const isHashArray = Object.keys(hash).every((i) => hash[i] === true);
+    const isHashValue = Object.keys(hash).every((i) => typeof hash[i] !== "object");
+    Object.keys(hash).map((id) => {
         const obj = typeof hash[id] === "object"
             ? Object.assign(Object.assign({}, hash[id]), { [__key__]: id }) : isHashArray
             ? id
@@ -83,12 +84,9 @@ exports.flatten = flatten;
  * @param arr an array of a particular type
  * @param keyProperty the property that will be used as the dictionaries key; if false
  * then will assign a firebase pushkey
-<<<<<<< HEAD
  * @param removeIdProperty allow you to optionally exclude the `id` from the object
  * as it is redundant to the `key` of the hash. By default though, this is _not_ done as
  * Firemodel benefits (and expects) from this duplication.
-=======
->>>>>>> release/0.10.2
  */
 function arrayToHash(arr, keyProperty, removeIdProperty = false) {
     if (arr.length === 0) {
@@ -148,7 +146,7 @@ exports.snapshotToArray = snapshotToArray;
  */
 function snapshotToHash(snap, idProp = "id") {
     const hash = snap.val() || {};
-    Object.keys(hash).forEach(key => typeof hash[key] === "object"
+    Object.keys(hash).forEach((key) => typeof hash[key] === "object"
         ? (hash[key][idProp] = key)
         : (hash[key] = { [idProp]: key, value: hash[key] }));
     return hash;
@@ -185,8 +183,8 @@ exports.snapshotToOrderedHash = snapshotToOrderedHash;
  */
 function getPropertyAcrossDictionaryItems(dictionary, property) {
     const output = [];
-    Object.keys(dictionary).map(item => {
-        const value = get_value_1.default(dictionary[item], property);
+    Object.keys(dictionary).map((item) => {
+        const value = lodash_get_1.default(dictionary[item], property);
         if (value !== undefined) {
             output.push(value);
         }
