@@ -1,5 +1,5 @@
 import { IDictionary } from "common-types";
-import get from "get-value";
+import get from "lodash.get";
 
 export interface ISnapShot {
   val: () => any;
@@ -15,7 +15,7 @@ export function removeIdPropertyFromHash<T = IDictionary>(
   Object.keys(hash).map((objId: Extract<keyof T, string>) => {
     const input: IDictionary = hash[objId];
     output[objId] = {};
-    Object.keys(input).map(prop => {
+    Object.keys(input).map((prop) => {
       if (prop !== idProp) {
         output[objId][prop] = input[prop];
       }
@@ -76,10 +76,12 @@ export function hashToArray<T = any>(
   }
   const hash: IDictionary = { ...{}, ...hashObj };
   const results: T[] = [];
-  const isHashArray = Object.keys(hash).every(i => hash[i] === true);
-  const isHashValue = Object.keys(hash).every(i => typeof hash[i] !== "object");
+  const isHashArray = Object.keys(hash).every((i) => hash[i] === true);
+  const isHashValue = Object.keys(hash).every(
+    (i) => typeof hash[i] !== "object"
+  );
 
-  Object.keys(hash).map(id => {
+  Object.keys(hash).map((id) => {
     const obj =
       typeof hash[id] === "object"
         ? { ...hash[id], [__key__]: id }
@@ -193,7 +195,7 @@ export function snapshotToHash<T = IDictionary>(
   idProp: string = "id"
 ): T {
   const hash: IDictionary = snap.val() || {};
-  Object.keys(hash).forEach(key =>
+  Object.keys(hash).forEach((key) =>
     typeof hash[key] === "object"
       ? (hash[key][idProp] = key)
       : (hash[key] = { [idProp]: key, value: hash[key] })
@@ -245,7 +247,7 @@ export function getPropertyAcrossDictionaryItems<T>(
   property: string
 ): T[] {
   const output: any[] = [];
-  Object.keys(dictionary).map(item => {
+  Object.keys(dictionary).map((item) => {
     const value = get(dictionary[item], property);
     if (value !== undefined) {
       output.push(value);
