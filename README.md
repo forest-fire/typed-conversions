@@ -1,4 +1,4 @@
-# typed-data-conversions
+# typed-conversions
 
 A small set of data conversion functions with Typescript 2.x typing. Conversions include:
 

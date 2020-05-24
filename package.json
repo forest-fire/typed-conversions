@@ -1,6 +1,6 @@
 {
   "name": "typed-conversions",
-  "version": "0.10.2",
+  "version": "0.10.3",
   "description": "typed-conversions",
   "license": "MIT",
   "repository": "https://github.com/forest-fire/typed-conversions",
@@ -30,14 +30,15 @@
     "watch:test": "npm run test -- --watch"
   },
   "dependencies": {
-    "common-types": "^1.12.18",
-    "get-value": "^3.0.1"
+    "common-types": "^1.14.3",
+    "lodash.get": "^4.4.2"
   },
   "devDependencies": {
     "@types/chai": "^4.2.9",
     "@types/get-value": "^3.0.0",
     "@types/js-yaml": "^3.12.0",
     "@types/lodash": "^4.14.123",
+    "@types/lodash.get": "^4.4.6",
     "@types/mocha": "^5.2.6",
     "@types/node": "^8.10.0",
     "@types/shelljs": "^0.8.3",
