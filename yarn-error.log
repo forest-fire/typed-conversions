@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.4/libexec/bin/yarn.js build
+  /usr/local/bin/node /usr/local/Cellar/yarn/1.22.4/libexec/bin/yarn.js add --dev @types/lodash-get
 
 PATH: 
   /Users/ken/bin:/usr/local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/MacGPG2/bin:/Library/Apple/usr/bin:/usr/local/aws/bin:/user/local/lib/node_modules:/Users/ken/.cargo/bin:/usr/local/itms/bin
@@ -14,17 +14,22 @@ Platform:
   darwin x64
 
 Trace: 
-  SyntaxError: /Volumes/Coding/forest-fire/typed-conversions/package.json: Unexpected token } in JSON at position 1211
-      at JSON.parse (<anonymous>)
-      at /usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:1625:59
-      at Generator.next (<anonymous>)
-      at step (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:310:30)
-      at /usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:321:13
+  Error: https://registry.yarnpkg.com/@types%2flodash-get: Not found
+      at Request.params.callback [as _callback] (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:66987:18)
+      at Request.self.callback (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:140748:22)
+      at Request.emit (events.js:315:20)
+      at Request.<anonymous> (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:141720:10)
+      at Request.emit (events.js:315:20)
+      at IncomingMessage.<anonymous> (/usr/local/Cellar/yarn/1.22.4/libexec/lib/cli.js:141642:12)
+      at Object.onceWrapper (events.js:421:28)
+      at IncomingMessage.emit (events.js:327:22)
+      at endReadableNT (_stream_readable.js:1221:12)
+      at processTicksAndRejections (internal/process/task_queues.js:84:21)
 
 npm manifest: 
   {
     "name": "typed-conversions",
-    "version": "0.10.4",
+    "version": "0.10.5",
     "description": "typed-conversions",
     "license": "MIT",
     "repository": "https://github.com/forest-fire/typed-conversions",
@@ -57,9 +62,11 @@ npm manifest:
     "dependencies": {
       "common-types": "^1.15.6",
       "get-value": "^3.0.1",
+      "lodash-es": "^4.17.15"
     },
     "devDependencies": {
       "@types/chai": "^4.2.9",
+      "@types/get-value": "^3.0.1",
       "@types/js-yaml": "^3.12.0",
       "@types/lodash": "^4.14.123",
       "@types/lodash.get": "^4.4.6",
@@ -1161,6 +1168,11 @@ Lockfile:
     integrity sha512-TcUlBem321DFQzBNuz8p0CLLKp0VvF/XH9E4KHNmgwyp4E3AfgI5cjiIVZWlbfThBop2qxFIh4+LeY6hVWWZ2w==
     dependencies:
       "@types/node" "*"
+  
+  "@types/get-value@^3.0.1":
+    version "3.0.1"
+    resolved "https://registry.yarnpkg.com/@types/get-value/-/get-value-3.0.1.tgz#67da2663d2a632fb2ed33693479176b2841749ca"
+    integrity sha512-Pla+0sjwKHH9d5aejg9hSXd+NxlKnaLutTpckENtCNTnrC+EmAsQsqhp+WJX8LgOBDDiRtiBj5kX8PwAfL+KdQ==
   
   "@types/glob@*":
     version "7.1.1"
@@ -2980,6 +2992,11 @@ Lockfile:
       p-locate "^3.0.0"
       path-exists "^3.0.0"
   
+  lodash-es@^4.17.15:
+    version "4.17.15"
+    resolved "https://registry.yarnpkg.com/lodash-es/-/lodash-es-4.17.15.tgz#21bd96839354412f23d7a10340e5eac6ee455d78"
+    integrity sha512-rlrc3yU3+JNOpZ9zj5pQtxnx2THmvRykwL4Xlxoa8I9lHBlVbbyPhgyPMioxVZ4NqyxaVVtaJnzsyOidQIhyyQ==
+  
   lodash.at@^4.6.0:
     version "4.6.0"
     resolved "https://registry.yarnpkg.com/lodash.at/-/lodash.at-4.6.0.tgz#93cdce664f0a1994ea33dd7cd40e23afd11b0ff8"
@@ -2989,11 +3006,6 @@ Lockfile:
     version "4.3.0"
     resolved "https://registry.yarnpkg.com/lodash.camelcase/-/lodash.camelcase-4.3.0.tgz#b28aa6288a2b9fc651035c7711f65ab6190331a6"
     integrity sha1-soqmKIorn8ZRA1x3EfZathkDMaY=
-  
-  lodash.get@^4.4.2:
-    version "4.4.2"
-    resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
-    integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
   
   lodash.has@^4.5.2:
     version "4.5.2"
