@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPropertyAcrossDictionaryItems = exports.snapshotToOrderedHash = exports.snapshotToOrderedArray = exports.snapshotToHash = exports.snapshotToArray = exports.arrayToHash = exports.flatten = exports.hashToArray = exports.keyValueArrayToDictionary = exports.keyValueDictionaryToArray = exports.removeIdPropertyFromHash = void 0;
-const lodash_get_1 = __importDefault(require("lodash.get"));
+const get_value_1 = __importDefault(require("get-value"));
 function removeIdPropertyFromHash(hash, idProp = "id") {
     const output = {};
     Object.keys(hash).map((objId) => {
@@ -184,7 +184,7 @@ exports.snapshotToOrderedHash = snapshotToOrderedHash;
 function getPropertyAcrossDictionaryItems(dictionary, property) {
     const output = [];
     Object.keys(dictionary).map((item) => {
-        const value = lodash_get_1.default(dictionary[item], property);
+        const value = get_value_1.default(dictionary[item], property);
         if (value !== undefined) {
             output.push(value);
         }
