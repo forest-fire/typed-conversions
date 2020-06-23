@@ -12,7 +12,7 @@ export function removeIdPropertyFromHash<T = IDictionary>(
   idProp = "id"
 ) {
   const output: any = {};
-  Object.keys(hash).map((objId: Extract<keyof T, string>) => {
+  Object.keys(hash).map((objId) => {
     const input: IDictionary = hash[objId];
     output[objId] = {};
     Object.keys(input).map((prop) => {

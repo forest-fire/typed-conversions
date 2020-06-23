@@ -1,8 +1,4 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-var lodashEs = require('lodash-es');
+import { get } from 'lodash-es';
 
 function removeIdPropertyFromHash(hash, idProp = "id") {
     const output = {};
@@ -173,7 +169,7 @@ function snapshotToOrderedHash(snap, idProp = "id") {
 function getPropertyAcrossDictionaryItems(dictionary, property) {
     const output = [];
     Object.keys(dictionary).map((item) => {
-        const value = lodashEs.get(dictionary[item], property);
+        const value = get(dictionary[item], property);
         if (value !== undefined) {
             output.push(value);
         }
@@ -181,15 +177,5 @@ function getPropertyAcrossDictionaryItems(dictionary, property) {
     return output;
 }
 
-exports.arrayToHash = arrayToHash;
-exports.flatten = flatten;
-exports.getPropertyAcrossDictionaryItems = getPropertyAcrossDictionaryItems;
-exports.hashToArray = hashToArray;
-exports.keyValueArrayToDictionary = keyValueArrayToDictionary;
-exports.keyValueDictionaryToArray = keyValueDictionaryToArray;
-exports.removeIdPropertyFromHash = removeIdPropertyFromHash;
-exports.snapshotToArray = snapshotToArray;
-exports.snapshotToHash = snapshotToHash;
-exports.snapshotToOrderedArray = snapshotToOrderedArray;
-exports.snapshotToOrderedHash = snapshotToOrderedHash;
+export { arrayToHash, flatten, getPropertyAcrossDictionaryItems, hashToArray, keyValueArrayToDictionary, keyValueDictionaryToArray, removeIdPropertyFromHash, snapshotToArray, snapshotToHash, snapshotToOrderedArray, snapshotToOrderedHash };
 //# sourceMappingURL=index.js.map

@@ -3,7 +3,9 @@
   "compilerOptions": {
     "noEmit": false,
     "module": "commonjs",
-    "target": "es2020",
-    "outDir": "./dist/cjs"
+    "outDir": "dist/cjs",
+    "strictNullChecks": false,
+    "strict": false,
+    "declaration": false
   }
 }
