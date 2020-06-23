@@ -1,20 +1,15 @@
 {
   "compilerOptions": {
-    "declaration": true,
+    "declaration": false,
     "module": "commonjs",
-    "target": "ES6",
+    "target": "es2020",
     "moduleResolution": "node",
     "sourceMap": true,
-    "noImplicitAny": true,
-    "outDir": "./dist/cjs",
     "removeComments": false,
-    "typeRoots": ["./node_modules/@types", "manual_typings"],
-    "baseUrl": ".",
-    "paths": { "lodash/*": ["node_modules/@types/lodash-es/*"] }
+    "noImplicitAny": true,
+    "noEmit": true
   },
-  "esModuleInterop": true,
-  "allowSyntheticDefaultImports": true,
-
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "**/*-spec.ts"]
+  "esModuleInterop": false,
+  "allowSyntheticDefaultImports": false,
+  "include": ["src/**/*"]
 }

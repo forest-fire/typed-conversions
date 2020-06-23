@@ -54,15 +54,16 @@ function hashToArray(hashObj, __key__ = "id") {
     if (hashObj && typeof hashObj !== "object") {
         throw new Error("Cant convert hash-to-array because hash was not passed in: " + hashObj);
     }
-    const hash = Object.assign({}, hashObj);
+    const hash = { ...{}, ...hashObj };
     const results = [];
     const isHashArray = Object.keys(hash).every((i) => hash[i] === true);
     const isHashValue = Object.keys(hash).every((i) => typeof hash[i] !== "object");
     Object.keys(hash).map((id) => {
         const obj = typeof hash[id] === "object"
-            ? Object.assign(Object.assign({}, hash[id]), { [__key__]: id }) : isHashArray
-            ? id
-            : { [__key__]: id, value: hash[id] };
+            ? { ...hash[id], [__key__]: id }
+            : isHashArray
+                ? id
+                : { [__key__]: id, value: hash[id] };
         results.push(obj);
     });
     return results;
@@ -117,7 +118,8 @@ function arrayToHash(arr, keyProperty, removeIdProperty = false) {
                 ? keyProperty(curr)
                 : curr[keyProperty];
         return isScalar
-            ? Object.assign(Object.assign({}, prev), { [key]: true }) : Object.assign(Object.assign({}, prev), { [key]: curr });
+            ? { ...prev, ...{ [key]: true } }
+            : { ...prev, ...{ [key]: curr } };
     }, {});
     return removeIdProperty ? removeIdPropertyFromHash(output) : output;
 }
@@ -162,7 +164,7 @@ function snapshotToOrderedArray(snap, idProp = "id") {
         if (typeof obj !== "object") {
             throw new Error(`Can't create a list from scalar values: "${obj}" | "${key}"`);
         }
-        output.push(Object.assign({ [idProp]: key }, obj));
+        output.push({ ...{ [idProp]: key }, ...obj });
         return true;
     });
     return output;

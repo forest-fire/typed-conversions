@@ -1,11 +1,10 @@
 import convert = require("../src");
-import * as helpers from "./testing/helpers";
-// tslint:disable-next-line:no-implicit-dependencies
-import * as chai from "chai";
-import { removeIdPropertyFromHash } from "../src/index";
-import { INameValuePair } from "common-types";
 
-const expect = chai.expect;
+import * as helpers from "./testing/helpers";
+
+import { INameValuePair } from "common-types";
+import { expect } from "chai";
+import { removeIdPropertyFromHash } from "../src/index";
 
 const basicHash = {
   "-K13121djdf": { name: "Bob", age: 35 },
@@ -15,7 +14,7 @@ const basicHash = {
   "-K13125djdf": { name: "Ken", age: 56 },
   "-K13126djdf": { name: "David", age: 78 },
   "-K13127djdf": { name: "Tammy", age: 28 },
-  "-K13128djdf": { name: "Lucy", age: 22 }
+  "-K13128djdf": { name: "Lucy", age: 22 },
 };
 
 const basicHashWithId = {
@@ -26,7 +25,7 @@ const basicHashWithId = {
   "-K13125djdf": { name: "Ken", age: 56, id: "-K13125djdf" },
   "-K13126djdf": { name: "David", age: 78, id: "-K13126djdf" },
   "-K13127djdf": { name: "Tammy", age: 28, id: "-K13127djdf" },
-  "-K13128djdf": { name: "Lucy", age: 22, id: "-K13128djdf" }
+  "-K13128djdf": { name: "Lucy", age: 22, id: "-K13128djdf" },
 };
 
 const scalarHash = () => ({
@@ -37,7 +36,7 @@ const scalarHash = () => ({
   "-K13125djdf": 25,
   "-K13126djdf": 300,
   "-K13127djdf": 200,
-  "-K13128djdf": 150
+  "-K13128djdf": 150,
 });
 
 const scalarArray = () => ({
@@ -48,12 +47,12 @@ const scalarArray = () => ({
   "-K13125djdf": true,
   "-K13126djdf": true,
   "-K13127djdf": true,
-  "-K13128djdf": true
+  "-K13128djdf": true,
 });
 
 const conflictedHash = {
   ...basicHash,
-  ...{ "-K13129djdf": { name: "Lucy", age: 22, id: "1341" } }
+  ...{ "-K13129djdf": { name: "Lucy", age: 22, id: "1341" } },
 };
 
 const listSnapshot = {
@@ -66,18 +65,18 @@ const listSnapshot = {
     "-K13125djdf": { name: "Ken", age: 56 },
     "-K13126djdf": { name: "David", age: 78 },
     "-K13127djdf": { name: "Tammy", age: 28 },
-    "-K13128djdf": { name: "Lucy", age: 22 }
-  })
+    "-K13128djdf": { name: "Lucy", age: 22 },
+  }),
 };
 
 const valueSnapshot = {
   key: "foobar",
-  val: () => "hello world"
+  val: () => "hello world",
 };
 
 const scalarSnapshot = {
   key: "foobar",
-  val: () => scalarHash()
+  val: () => scalarHash(),
 };
 
 const listOfScalar = {
@@ -85,8 +84,8 @@ const listOfScalar = {
   val: () => ({
     one: 1,
     two: 2,
-    three: 3
-  })
+    three: 3,
+  }),
 };
 
 describe("snapshotToHash", () => {
@@ -120,7 +119,7 @@ describe("hashToArray()", () => {
     const converted = convert.hashToArray({ ...{}, ...basicHash });
     expect(converted).to.be.an("array");
     expect(converted.length).to.equal(Object.keys(basicHash).length);
-    expect(converted.filter(i => i.age === 22).length).to.equal(2);
+    expect(converted.filter((i) => i.age === 22).length).to.equal(2);
   });
 
   it("works with an 'id' conflict", () => {
@@ -128,7 +127,7 @@ describe("hashToArray()", () => {
 
     expect(converted).to.be.an("array");
     expect(converted.length).to.equal(Object.keys(conflictedHash).length);
-    expect(converted.filter(i => i.age === 22).length).to.equal(3);
+    expect(converted.filter((i) => i.age === 22).length).to.equal(3);
     expect(converted.map((c: any) => c.id)).includes("-K13129djdf");
     expect(converted.map((c: any) => c.id)).not.includes("1341");
   });
@@ -137,17 +136,19 @@ describe("hashToArray()", () => {
     const converted = convert.hashToArray(conflictedHash, "_id" as any);
     expect(converted).to.be.an("array");
     expect(converted.length).to.equal(Object.keys(conflictedHash).length);
-    expect(converted.filter(i => i.age === 22).length).to.equal(3);
+    expect(converted.filter((i) => i.age === 22).length).to.equal(3);
     expect(converted.map((c: any) => c._id)).includes("-K13129djdf");
     expect(converted.map((c: any) => c._id)).not.includes("1341");
   });
 
   it("scalar name/value converts to array of name value", () => {
-    const converted = convert.keyValueDictionaryToArray(scalarHash, { key: "key" });
+    const converted = convert.keyValueDictionaryToArray(scalarHash, {
+      key: "key",
+    });
     expect(converted).to.be.an("array");
     expect(converted.length).to.equal(Object.keys(scalarHash).length);
 
-    converted.map(item => {
+    converted.map((item) => {
       expect(item).to.be.an("object");
       expect(item).to.haveOwnProperty("key");
       expect(item).to.haveOwnProperty("value");
@@ -162,14 +163,12 @@ describe("hashToArray()", () => {
       "-LFsnvrvoavTDlWzdoPL": 1529961496059,
       "-LFsnvsq2FDo48xxRzmO": 1529961496118,
       "-LFsnvswzAKs8hgu6B7R": 1529961496124,
-      "-LFsnvt2hq28zZHeddyn": 1529961496131
+      "-LFsnvt2hq28zZHeddyn": 1529961496131,
     };
     const converted = convert.hashToArray(data);
-    expect(converted)
-      .to.be.an("array")
-      .and.to.have.lengthOf(5);
+    expect(converted).to.be.an("array").and.to.have.lengthOf(5);
 
-    converted.forEach(c => {
+    converted.forEach((c) => {
       expect(c).to.be.an("object");
       expect(c).to.haveOwnProperty("id");
       expect(c).to.haveOwnProperty("value");
@@ -182,12 +181,10 @@ describe("hashToArray()", () => {
       "-LFsnvrvoavTDlWzdoPL": true,
       "-LFsnvsq2FDo48xxRzmO": true,
       "-LFsnvswzAKs8hgu6B7R": true,
-      "-LFsnvt2hq28zZHeddyn": true
+      "-LFsnvt2hq28zZHeddyn": true,
     };
     const converted = convert.hashToArray(data);
-    expect(converted)
-      .to.be.an("array")
-      .and.to.have.lengthOf(5);
+    expect(converted).to.be.an("array").and.to.have.lengthOf(5);
     expect(converted[0]).to.be.a("string");
   });
 
@@ -197,7 +194,7 @@ describe("hashToArray()", () => {
 
     expect(converted.length).to.equal(Object.keys(scalarHash()).length);
 
-    converted.map(item => {
+    converted.map((item) => {
       expect(item).to.be.an("object");
       expect(item).to.haveOwnProperty("id");
       expect(item).to.haveOwnProperty("value");
@@ -206,11 +203,17 @@ describe("hashToArray()", () => {
   });
 
   it("keyValueDictionaryToArray, keyValueArrayToDictionary are inverses", () => {
-    const converted = convert.keyValueDictionaryToArray(scalarHash(), { key: "id" });
-    const convertedBack = convert.keyValueArrayToDictionary(converted, { key: "id" });
+    const converted = convert.keyValueDictionaryToArray(scalarHash(), {
+      key: "id",
+    });
+    const convertedBack = convert.keyValueArrayToDictionary(converted, {
+      key: "id",
+    });
     expect(converted).to.be.an("array");
     expect(convertedBack).to.be.an("object");
-    expect(JSON.stringify(scalarHash())).to.equal(JSON.stringify(convertedBack));
+    expect(JSON.stringify(scalarHash())).to.equal(
+      JSON.stringify(convertedBack)
+    );
   });
 
   it("scalar name/value pairing converts to an name/value dictionary", () => {
@@ -219,7 +222,7 @@ describe("hashToArray()", () => {
 
     expect(converted.length).to.equal(Object.keys(scalarHash()).length);
 
-    converted.map(item => {
+    converted.map((item) => {
       expect(item).to.be.an("object");
       expect(item).to.haveOwnProperty("id");
       expect(item).to.haveOwnProperty("value");
@@ -231,7 +234,7 @@ describe("hashToArray()", () => {
     const converted = convert.hashToArray(scalarArray());
     expect(converted).to.be.an("array");
     expect(converted.length).to.equal(Object.keys(scalarArray()).length);
-    Object.keys(scalarArray()).map(key => {
+    Object.keys(scalarArray()).map((key) => {
       expect(converted).to.contain(key);
     });
   });
@@ -242,7 +245,7 @@ describe("arrayToHash()", () => {
     { id: "1234", name: "Bob", age: 12 },
     { id: "4567", name: "Chris", age: 25 },
     { id: "5678", name: "Cindy", age: 36 },
-    { id: "6789", name: "Scott", age: 5 }
+    { id: "6789", name: "Scott", age: 5 },
   ];
 
   const scalarList = ["foo", "bar", "baz"];
@@ -256,7 +259,7 @@ describe("arrayToHash()", () => {
 
   it("works with bespoke ID property", () => {
     const hash = convert.arrayToHash(
-      simpleList.map(r => {
+      simpleList.map((r) => {
         const output = { ...{ _id: r.id }, ...r };
         delete output.id;
         return output;
@@ -282,7 +285,7 @@ describe("arrayToHash()", () => {
     const converted = convert.arrayToHash(scalarList);
     const reverted = convert.hashToArray(converted);
     expect(reverted).to.have.lengthOf(Object.keys(converted).length);
-    reverted.map(item => {
+    reverted.map((item) => {
       expect(Object.keys(converted)).contains(item);
     });
   });
@@ -307,7 +310,7 @@ describe("snapshotToArray()", () => {
 
     expect(Object.keys(list).length).to.equal(expectedLength);
     const knownKey = helpers.firstKey(listSnapshot.val());
-    expect(list.map(i => i.id)).to.include(knownKey);
+    expect(list.map((i) => i.id)).to.include(knownKey);
     expect(list[0].id).to.be.a("string");
     expect(list[0].name).to.be.a("string");
     expect(list[0].age).to.be.a("number");
@@ -319,7 +322,7 @@ describe("snapshotToArray()", () => {
 
     expect(Object.keys(list).length).to.equal(expectedLength);
     const knownKey = helpers.firstKey(listSnapshot.val());
-    expect(list.map(i => i._id)).to.include(knownKey);
+    expect(list.map((i) => i._id)).to.include(knownKey);
     expect(list[0]._id).to.be.a("string");
     expect(list[0].name).to.be.a("string");
     expect(list[0].age).to.be.a("number");
@@ -349,13 +352,21 @@ describe("snapshotToSortedArray()", () => {
 });
 
 describe("flatten()", () => {
-  const multiNumbersNoIntersection = [[1, 2, 3], [4, 5, 6], [7, 8, 9]];
+  const multiNumbersNoIntersection = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+  ];
 
-  const multiNumbersWithIntersection = [[1, 2, 3], [1, 2, 6], [1, 2, 9]];
+  const multiNumbersWithIntersection = [
+    [1, 2, 3],
+    [1, 2, 6],
+    [1, 2, 9],
+  ];
 
   const arrayOfPromises = [
     [Promise.resolve(), Promise.resolve(), Promise.resolve()],
-    [Promise.resolve(), Promise.resolve(), Promise.resolve()]
+    [Promise.resolve(), Promise.resolve(), Promise.resolve()],
   ];
 
   it("flattening a multi-dimensional arrays which have intersection works", () => {
@@ -364,7 +375,8 @@ describe("flatten()", () => {
     expect(convert.flatten(multiNumbersWithIntersection)).to.not.include(5);
     expect(convert.flatten(multiNumbersWithIntersection)).to.include(9);
     expect(
-      convert.flatten(multiNumbersWithIntersection).filter(n => n === 1).length
+      convert.flatten(multiNumbersWithIntersection).filter((n) => n === 1)
+        .length
     ).to.equal(3);
   });
 
@@ -379,17 +391,20 @@ describe("others > ", () => {
       abc: {
         name: "foo",
         meta: {
-          thingy: 1
-        }
+          thingy: 1,
+        },
       },
       cdf: {
         name: "foo",
         meta: {
-          thingy: 2
-        }
-      }
+          thingy: 2,
+        },
+      },
     };
-    const converted = convert.getPropertyAcrossDictionaryItems(dictionary, "meta.thingy");
+    const converted = convert.getPropertyAcrossDictionaryItems(
+      dictionary,
+      "meta.thingy"
+    );
     expect(converted).to.be.an("array");
     expect(converted).to.have.lengthOf(2);
     expect(converted).to.contain(1);

@@ -14,17 +14,18 @@
     "dist"
   ],
   "main": "dist/cjs/index.js",
-  "module": "dist/esnext/index.js",
+  "module": "dist/es/index.js",
+  "typings": "dist/es/index.d.ts",
   "browserslist": [
-    "node 10",
     "node 12"
   ],
-  "typings": "dist/esnext/index.d.ts",
   "scripts": {
     "clean": "rimraf dist",
     "lint": "tslint --force --format verbose \"src/**/*.ts\"",
     "build:rollup": "npm run clean && bili src/index.ts --format es,cjs && tsc src/index.ts --declaration -outDir dist --noEmit",
-    "build": "npm run clean && tsc -p tsconfig.esnext.json && tsc -p tsconfig.json",
+    "build": "run-s clean build:cjs build:es",
+    "build:cjs": "tsc -p tsconfig.cjs.json",
+    "build:es": "tsc -p tsconfig.es.json",
     "test": "mocha --require ts-node/register --exit 'test/**/*-spec.ts'",
     "coverage": "nyc --include='src/**/*.ts' --reporter=text --reporter=html --reporter=lcov mocha --compilers ts:ts-node/register --recursive 'test/**/*.test.ts'",
     "watch": "npm run build -- --watch",
@@ -32,12 +33,9 @@
   },
   "dependencies": {
     "common-types": "^1.15.6",
-    "get-value": "^3.0.1",
     "lodash-es": "^4.17.15"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.9",
-    "@types/get-value": "^3.0.1",
     "@types/jest": "^26.0.0",
     "@types/js-yaml": "^3.12.0",
     "@types/lodash-es": "^4.17.3",
@@ -45,18 +43,17 @@
     "@types/node": "^8.10.0",
     "@types/shelljs": "^0.8.3",
     "@types/stack-trace": "^0.0.29",
-    "bili": "^4.8.1",
     "chai": "^4.2.0",
     "firebase-admin": "8.12.1",
     "jest": "^26.0.1",
     "jest-extended": "^0.11.5",
-    "mocha": "^7.0.1",
+    "npm-run-all": "^4.1.5",
     "rimraf": "^3.0.2",
     "ts-babel": "^6.1.7",
     "ts-jest": "^26.1.1",
-    "ts-node": "^8.6.2",
+    "ts-node": "^8.10.2",
     "tslint": "^5.20.1",
-    "typescript": "^3.7.5"
+    "typescript": "^3.9.5"
   },
   "engines": {
     "node": ">=10.0.0"

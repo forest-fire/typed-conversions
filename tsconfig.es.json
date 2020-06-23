@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "module": "es2020",
+    "target": "es2020",
+    "outDir": "./dist/es"
+  }
+}
