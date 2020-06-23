@@ -2,14 +2,14 @@
   "compilerOptions": {
     "declaration": false,
     "module": "commonjs",
-    "target": "es2020",
+    "target": "es2017",
     "moduleResolution": "node",
     "sourceMap": true,
     "removeComments": false,
     "noImplicitAny": true,
-    "noEmit": true
+    "noEmit": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
   },
-  "esModuleInterop": false,
-  "allowSyntheticDefaultImports": false,
   "include": ["src/**/*"]
 }
