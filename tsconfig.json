@@ -8,8 +8,8 @@
     "removeComments": false,
     "noImplicitAny": true,
     "noEmit": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "esModuleInterop": false,
+    "allowSyntheticDefaultImports": false
   },
   "include": ["src/**/*"]
 }
