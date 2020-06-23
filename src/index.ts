@@ -1,5 +1,5 @@
 import { IDictionary } from "common-types";
-import get from "get-value";
+import { get } from "lodash-es";
 
 export interface ISnapShot {
   val: () => any;

@@ -1,4 +1,4 @@
-import get from "get-value";
+import { get } from "lodash-es";
 export function removeIdPropertyFromHash(hash, idProp = "id") {
     const output = {};
     Object.keys(hash).map((objId) => {
