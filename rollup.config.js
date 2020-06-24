@@ -1,5 +1,5 @@
-// const typescript = require("@rollup/plugin-typescript");
-const typescript2 = require("rollup-plugin-typescript2");
+import resolve from "@rollup/plugin-node-resolve";
+import typescript2 from "rollup-plugin-typescript2";
 
 const generalConfig = (moduleSystem) => ({
   input: "src/index.ts",
@@ -20,6 +20,7 @@ const generalConfig = (moduleSystem) => ({
       //   { transform: "typescript-transform-paths", afterDeclarations: true },
       // ],
     }),
+    resolve(),
   ],
 });
 

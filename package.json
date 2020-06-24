@@ -36,6 +36,7 @@
     "lodash-es": "^4.17.15"
   },
   "devDependencies": {
+    "@rollup/plugin-node-resolve": "^8.1.0",
     "@rollup/plugin-typescript": "^5.0.0",
     "@types/jest": "^26.0.0",
     "@types/js-yaml": "^3.12.0",
