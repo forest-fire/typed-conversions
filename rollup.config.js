@@ -12,7 +12,9 @@ const generalConfig = (moduleSystem) => ({
   plugins: [
     typescript2({
       rootDir: "./",
-      // tsconfig: `tsconfig.${moduleSystem}.json`,
+      // using TS2, you must always transpile using ES
+      // then you can convert afterward to CJS or whatever
+      // module format you want
       tsconfig: `tsconfig.es.json`,
       // typescript: require("ttypescript"),
       // plugins: [
