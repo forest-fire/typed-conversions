@@ -1,7 +1,3 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
 /** Detect free variable `global` from Node.js. */
 var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
 
@@ -1262,15 +1258,5 @@ function getPropertyAcrossDictionaryItems(dictionary, property) {
     return output;
 }
 
-exports.arrayToHash = arrayToHash;
-exports.flatten = flatten;
-exports.getPropertyAcrossDictionaryItems = getPropertyAcrossDictionaryItems;
-exports.hashToArray = hashToArray;
-exports.keyValueArrayToDictionary = keyValueArrayToDictionary;
-exports.keyValueDictionaryToArray = keyValueDictionaryToArray;
-exports.removeIdPropertyFromHash = removeIdPropertyFromHash;
-exports.snapshotToArray = snapshotToArray;
-exports.snapshotToHash = snapshotToHash;
-exports.snapshotToOrderedArray = snapshotToOrderedArray;
-exports.snapshotToOrderedHash = snapshotToOrderedHash;
+export { arrayToHash, flatten, getPropertyAcrossDictionaryItems, hashToArray, keyValueArrayToDictionary, keyValueDictionaryToArray, removeIdPropertyFromHash, snapshotToArray, snapshotToHash, snapshotToOrderedArray, snapshotToOrderedHash };
 //# sourceMappingURL=index.js.map

@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "declaration": true,
+    "module": "es2015",
+    "target": "es2015",
+    "outDir": "./dist/es"
+  }
+}
