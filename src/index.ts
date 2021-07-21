@@ -1,5 +1,5 @@
 import { IDictionary } from "common-types";
-import { get } from "lodash-es";
+import { get } from "native-dash";
 
 export interface ISnapShot {
   val: () => any;
@@ -86,8 +86,8 @@ export function hashToArray<T = any>(
       typeof hash[id] === "object"
         ? { ...hash[id], [__key__]: id }
         : isHashArray
-        ? id
-        : { [__key__]: id, value: hash[id] };
+          ? id
+          : { [__key__]: id, value: hash[id] };
 
     results.push(obj);
   });
@@ -156,8 +156,8 @@ export function arrayToHash<T = any>(
     const key = isScalar
       ? curr
       : typeof keyProperty === "function"
-      ? (keyProperty(curr) as keyof T)
-      : curr[keyProperty];
+        ? (keyProperty(curr) as keyof T)
+        : curr[keyProperty];
 
     return isScalar
       ? { ...prev, ...{ [key as any]: true } }
