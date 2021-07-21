@@ -1,17 +1,17 @@
 // tslint:disable:no-implicit-dependencies
 import "./test-console"; // TS declaration
 import { IDictionary } from "common-types";
-import { first, last } from "lodash";
+import { first, last } from "native-dash";
 import * as fs from "fs";
 import * as yaml from "js-yaml";
 import * as process from "process";
-export { first, last } from "lodash";
+export { first, last } from "native-dash";
 export function setupEnv() {
   if (!process.env.AWS_STAGE) {
     process.env.AWS_STAGE = "test";
   }
   const current = process.env;
-  const yamlConfig: IDictionary = yaml.safeLoad(fs.readFileSync("./env.yml", "utf8"));
+  const yamlConfig: IDictionary = JSON.parse(yaml.load(fs.readFileSync("./env.yml", "utf8")) as string);
   const combined = {
     ...yamlConfig[process.env.AWS_STAGE],
     ...process.env
